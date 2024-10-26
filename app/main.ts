@@ -11,29 +11,28 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
       return parseInt(bencodedValue.substring(startIndex + 1, endIndex));
     }
   }
-  if (bencodedValue[0] === "l") {
-    const endIndex = bencodedValue.indexOf("e");
-    let index = bencodedValue.indexOf(":");
-    let res = [];
-    while (index < endIndex) {
-      let j = index + 1;
-      if (bencodedValue[j] === "i") {
-        res.push(
-          bencodedValue.substring(bencodedValue.indexOf(":") + 1),
-          bencodedValue.indexOf("i")
-        );
+
+  function parse(index: number): [any, number] {
+    const char = bencodedValue[index];
+
+    if (char === "l") {
+      const list: any[] = [];
+      index++; //move past 'l'
+
+      while (bencodedValue[index] !== "e") {
+        const [value, newIndex] = parse(index);
+        list.push(value);
+        index = newIndex;
       }
-      if (bencodedValue[j] === "e") {
-        res.push(
-          bencodedValue.substring(bencodedValue.indexOf("i") + 1),
-          bencodedValue.indexOf("e")
-        );
-      }
-      j++;
-      index++;
+      return [list, index + 1];
     }
-    return res;
+    if (char === "i") {
+      const endIdx = bencodedValue.indexOf("e", index);
+      const intVal = parseInt(bencodedValue.substring(index + 1, endIdx), 10);
+      return [intVal, endIdx + 1];
+    }
   }
+
   if (!isNaN(parseInt(bencodedValue[0]))) {
     const firstColonIndex = bencodedValue.indexOf(":");
     if (firstColonIndex === -1) {
