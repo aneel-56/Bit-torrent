@@ -15,33 +15,43 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
   function parse(index: number): [any, number] {
     const char = bencodedValue[index];
 
+    // Parse List
     if (char === "l") {
       const list: any[] = [];
-      index++; //move past 'l'
+      index++; // Move past 'l'
 
+      // Parse elements within list until "e"
       while (bencodedValue[index] !== "e") {
         const [value, newIndex] = parse(index);
         list.push(value);
         index = newIndex;
       }
-      return [list, index + 1];
+
+      return [list, index + 1]; // Move past 'e'
     }
+
+    // Parse Integer
     if (char === "i") {
       const endIdx = bencodedValue.indexOf("e", index);
+      if (endIdx === -1) throw new Error("Invalid bencoded integer");
       const intVal = parseInt(bencodedValue.substring(index + 1, endIdx), 10);
       return [intVal, endIdx + 1];
     }
+
+    // Parse String (length:content format)
+    if (!isNaN(Number(char))) {
+      const colonIdx = bencodedValue.indexOf(":", index);
+      if (colonIdx === -1) throw new Error("Invalid bencoded string");
+      const strLen = parseInt(bencodedValue.substring(index, colonIdx), 10);
+      const strVal = bencodedValue.substring(colonIdx + 1, colonIdx + 1 + strLen);
+      return [strVal, colonIdx + 1 + strLen];
+    }
+
+    throw new Error("Unexpected character in bencoded value");
   }
 
-  if (!isNaN(parseInt(bencodedValue[0]))) {
-    const firstColonIndex = bencodedValue.indexOf(":");
-    if (firstColonIndex === -1) {
-      throw new Error("Invalid encoded value");
-    }
-    return bencodedValue.substring(firstColonIndex + 1);
-  } else {
-    throw new Error("Only strings are supported at the moment");
-  }
+  const [result] = parse(0);
+  return result;
 }
 
 const args = process.argv;
@@ -55,6 +65,4 @@ if (args[2] === "decode") {
     console.error(error.message);
   }
 }
-function indexOf(arg0: string): number | undefined {
-  throw new Error("Function not implemented.");
-}
+
