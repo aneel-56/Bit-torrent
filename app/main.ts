@@ -16,7 +16,7 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
     const char = bencodedValue[index];
 
     // Parse List
-    if (char === "l") {
+    if (char === "l" || char === "d") {
       const list: any[] = [];
       index++; // Move past 'l'
       // l5:helloi52ee
