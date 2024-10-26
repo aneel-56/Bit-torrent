@@ -13,6 +13,7 @@ function decodeBencode(bencodedValue: string): string | number | string[] {
   }
   if (bencodedValue[0] === "l") {
     const res = [];
+    const startIndex = bencodedValue.indexOf(bencodedValue[0]);
     const firstColonIndex = bencodedValue.indexOf(":");
     const firstEndIndex = bencodedValue.indexOf("i");
     const firstVal = bencodedValue.substring(
@@ -21,8 +22,8 @@ function decodeBencode(bencodedValue: string): string | number | string[] {
     );
     const secondVal = bencodedValue.substring(firstEndIndex + 1, endIndex);
     res.push(firstVal, secondVal);
-    if(bencodedValue.slice(indexOf(bencodedValue[0]), endIndex).length === 0){
-        return []
+    if (bencodedValue.substring(startIndex, endIndex).length === 0) {
+      return [];
     }
     return res;
   }
@@ -49,6 +50,5 @@ if (args[2] === "decode") {
   }
 }
 function indexOf(arg0: string): number | undefined {
-    throw new Error("Function not implemented.");
+  throw new Error("Function not implemented.");
 }
-
