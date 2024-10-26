@@ -7,7 +7,7 @@ function decodeBencode(bencodedValue: string): string | number {
     let endIndex = bencodedValue.indexOf("e");
     if (endIndex === -1) {
       throw new Error("Invalid encoded String");
-    } else {
+    } else if (bencodedValue[0] === "i") {
       return parseInt(bencodedValue.substring(startIndex, endIndex));
     }
   }
