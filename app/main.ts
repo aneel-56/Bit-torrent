@@ -1,15 +1,28 @@
 // Examples:
 // - decodeBencode("5:hello") -> "hello"
 // - decodeBencode("10:hello12345") -> "hello12345"
-function decodeBencode(bencodedValue: string): string | number {
+function decodeBencode(bencodedValue: string): string | number | string[] {
+  let endIndex = bencodedValue.indexOf("e");
   if (bencodedValue[0] === "i") {
     let startIndex = bencodedValue.indexOf("i");
-    let endIndex = bencodedValue.indexOf("e");
     if (endIndex === -1) {
       throw new Error("Invalid encoded String");
     } else if (bencodedValue[0] === "i") {
       return parseInt(bencodedValue.substring(startIndex + 1, endIndex));
     }
+  }
+  if (bencodedValue[0] === "l") {
+    const res = [];
+    const firstColonIndex = bencodedValue.indexOf(":");
+    const firstEndIndex = bencodedValue.indexOf("i");
+    const firstVal = bencodedValue.substring(
+      firstColonIndex + 1,
+      firstEndIndex
+    );
+    const secondVal = bencodedValue.substring(firstEndIndex + 1, endIndex);
+    res.push(firstVal, secondVal);
+
+    return res;
   }
   if (!isNaN(parseInt(bencodedValue[0]))) {
     const firstColonIndex = bencodedValue.indexOf(":");
