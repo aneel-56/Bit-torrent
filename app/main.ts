@@ -22,12 +22,10 @@ const args = process.argv;
 const bencodedValue = args[3];
 
 if (args[2] === "decode") {
-  console.log("Logs from your program will appear here!");
-
   try {
     const decoded = decodeBencode(bencodedValue);
     console.log(JSON.stringify(decoded));
-  } catch (error) {
+  } catch (error: any) {
     console.error(error.message);
   }
 }
