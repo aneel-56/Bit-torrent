@@ -80,10 +80,10 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
       );
       return [strVal, colIndex + 1 + strLen];
     }
-    const [result] = parse(0);
-    return result;
+    throw new Error("Unexected character in the bencoded value");
   }
-  return endIndex;
+  const [result] = parse(0);
+  return result;
 }
 
 const args = process.argv;
