@@ -1,7 +1,7 @@
 // Examples:
 // - decodeBencode("5:hello") -> "hello"
 // - decodeBencode("10:hello12345") -> "hello12345"
-function decodeBencode(bencodedValue: string): string | number | string[] {
+function decodeBencode(bencodedValue: string): string | number | any[] {
   let endIndex = bencodedValue.indexOf("e");
   if (bencodedValue[0] === "i") {
     let startIndex = bencodedValue.indexOf("i");
@@ -32,6 +32,7 @@ function decodeBencode(bencodedValue: string): string | number | string[] {
       j++;
       index++;
     }
+    return res;
   }
   if (!isNaN(parseInt(bencodedValue[0]))) {
     const firstColonIndex = bencodedValue.indexOf(":");
