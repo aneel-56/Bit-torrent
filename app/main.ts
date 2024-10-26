@@ -21,7 +21,9 @@ function decodeBencode(bencodedValue: string): string | number | string[] {
     );
     const secondVal = bencodedValue.substring(firstEndIndex + 1, endIndex);
     res.push(firstVal, secondVal);
-
+    if(bencodedValue.slice(indexOf(bencodedValue[0]), endIndex).length === 0){
+        return []
+    }
     return res;
   }
   if (!isNaN(parseInt(bencodedValue[0]))) {
@@ -46,3 +48,7 @@ if (args[2] === "decode") {
     console.error(error.message);
   }
 }
+function indexOf(arg0: string): number | undefined {
+    throw new Error("Function not implemented.");
+}
+
