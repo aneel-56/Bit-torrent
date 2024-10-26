@@ -8,7 +8,7 @@ function decodeBencode(bencodedValue: string): string | number {
     if (endIndex === -1) {
       throw new Error("Invalid encoded String");
     } else {
-      return parseInt(bencodedValue.slice(startIndex, endIndex));
+      return parseInt(bencodedValue.substring(startIndex, endIndex));
     }
   }
   if (!isNaN(parseInt(bencodedValue[0]))) {
