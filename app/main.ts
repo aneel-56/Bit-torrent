@@ -12,20 +12,26 @@ function decodeBencode(bencodedValue: string): string | number | string[] {
     }
   }
   if (bencodedValue[0] === "l") {
-    const res = [];
-    const startIndex = bencodedValue.indexOf(bencodedValue[0]);
-    const firstColonIndex = bencodedValue.indexOf(":");
-    const firstEndIndex = bencodedValue.indexOf("i");
-    const firstVal = bencodedValue.substring(
-      firstColonIndex + 1,
-      firstEndIndex
-    );
-    const secondVal = bencodedValue.substring(firstEndIndex + 1, endIndex);
-    res.push(firstVal, secondVal);
-    if (bencodedValue.substring(startIndex, endIndex).length === 0) {
-      return [];
+    const endIndex = bencodedValue.indexOf("e");
+    let index = bencodedValue.indexOf(":");
+    let res = [];
+    while (index < endIndex) {
+      let j = index + 1;
+      if (bencodedValue[j] === "i") {
+        res.push(
+          bencodedValue.substring(bencodedValue.indexOf(":") + 1),
+          bencodedValue.indexOf("i")
+        );
+      }
+      if (bencodedValue[j] === "e") {
+        res.push(
+          bencodedValue.substring(bencodedValue.indexOf("i") + 1),
+          bencodedValue.indexOf("e")
+        );
+      }
+      j++;
+      index++;
     }
-    return res;
   }
   if (!isNaN(parseInt(bencodedValue[0]))) {
     const firstColonIndex = bencodedValue.indexOf(":");
