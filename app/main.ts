@@ -98,10 +98,11 @@ function bencode(data: Record<string, any> | string | number): Buffer | string {
       result += `${key.length}:${key}${bencode(value)}`;
     }
     return Buffer.from(result + "e");
-  } else if (typeof data === "string") {
-    return Buffer.from(`${data.length}:${data}`);
-  } else if (typeof data === "number") {
-    return Buffer.from(`i${data}e`);
+    // } else if (typeof data === "string") {
+    //   return Buffer.from(`${data.length}:${data}`);
+    // } else if (typeof data === "number") {
+    //   return Buffer.from(`i${data}e`);
+    // }
   }
   throw new Error("Unsupported data type of bencoding");
 }
