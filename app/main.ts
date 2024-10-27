@@ -2,7 +2,10 @@
 // - decodeBencode("5:hello") -> "hello"
 // - decodeBencode("10:hello12345") -> "hello12345"
 const fs = require("fs");
-function decodeBencode(bencodedValue: string): string | number | any[] {
+
+function decodeBencode(
+  bencodedValue: string
+): string | number | any[] | Buffer {
   let endIndex = bencodedValue.indexOf("e");
   if (bencodedValue[0] === "i") {
     let startIndex = bencodedValue.indexOf("i");
@@ -90,6 +93,19 @@ if (args[2] === "decode") {
   }
 } else if (args[2] === "info") {
   const torrentFile = args[3];
-  const contents = fs.readFileSync(torrentFile, "utf-8");
-  console.log(Buffer.from(contents));
+  const contents = fs.readFileSync(torrentFile);
+  if (typeof contents === "object") {
+    const announce = contents["announce"];
+    const info = contents["info"];
+    const length = info?.["length"];
+
+    if (typeof announce === "string" && typeof length === "number") {
+      console.log(`Tracker URL: ${announce}`);
+      console.log(`Length: ${length}`);
+    } else {
+      console.error("Invalid torrent structure");
+    }
+  } else {
+    console.error("Failed to parse torrent data");
+  }
 }
