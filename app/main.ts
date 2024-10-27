@@ -93,11 +93,12 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
 function bencode(data: Record<string, any> | string | number): Buffer {
   if (typeof data === "object" && !Array.isArray(data)) {
     let result = "d";
-    for (let key of Object.keys(data)) {
+    const keys = Object.keys(data).sort(); // Sort keys alphabetically as per bencoding rules
+    for (let key of keys) {
       const value = data[key];
-      result += `${key.length}:${key}${bencode(value)}`;
+      result += `${key.length}:${key}${bencode(value).toString("binary")}`;
     }
-    return Buffer.from(result + "e");
+    return Buffer.from(result + "e", "binary");
   } else if (Array.isArray(data)) {
     let result = "l";
     for (let item of data) {
@@ -109,7 +110,7 @@ function bencode(data: Record<string, any> | string | number): Buffer {
   } else if (typeof data === "number") {
     return Buffer.from(`i${data}e`, "binary");
   }
-  throw new Error("Unsupported data type of bencoding");
+  throw new Error("Unsupported data type for bencoding");
 }
 
 const args = process.argv;
