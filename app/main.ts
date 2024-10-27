@@ -3,7 +3,7 @@
 // - decodeBencode("10:hello12345") -> "hello12345"
 const fs = require("fs");
 const crypto = require("crypto");
-
+const zlib = require("zlib");
 interface TorrentInfo {
   announce: string;
   info: {
@@ -92,7 +92,8 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
 
 function bencode(data: Record<string, any> | string | number): Buffer {
   if (typeof data === "object" && !Array.isArray(data)) {
-    console.log(data.pieces.toString("binary"));
+    const deComp = zlib.inflateSync(data.pieces);
+    console.log(deComp)
     let result = "d";
     const keys = Object.keys(data).sort(); // Sort keys alphabetically as per bencoding rules
     console.log(keys);
