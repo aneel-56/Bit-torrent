@@ -121,7 +121,7 @@ if (args[2] === "decode") {
   const torrentFile = args[3];
   const torrentData = fs.readFileSync(torrentFile).toString("binary");
   const contents = decodeBencode(torrentData) as unknown as TorrentInfo;
-  if (typeof contents === "object") {
+  if (torrentData && typeof contents === "object") {
     const announce = contents["announce"];
     const info = contents["info"];
     const length = info?.["length"];
@@ -129,12 +129,11 @@ if (args[2] === "decode") {
     if (typeof announce === "string" && typeof length === "number") {
       // console.log(`Tracker URL: ${announce}`);
       // console.log(`Length: ${length}`);
-      if (typeof info === "string") {
         const bencodedInfo = bencode(info);
         const infoHash = crypto.createHash("sha1").update(bencodedInfo);
         console.log(infoHash);
         console.log(`Info Hash: ${infoHash}`);
-      }
+      
     } else {
       console.error("Invalid torrent structure");
     }
