@@ -96,14 +96,8 @@ function bencode(data: Record<string, any> | string | number): Buffer {
     const keys = Object.keys(data).sort(); // Sort keys alphabetically as per bencoding rules
     console.log(keys);
     for (let key of keys) {
-      if (key === "piece length") {
-        const piece_len = data[key];
-        result += piece_len;
-      }
-      console.log(result);
-    }
-    for (let key of keys) {
       const value = data[key];
+      console.log(`${value}\n`)
       result += `${key.length}:${key}${bencode(value).toString("binary")}`;
     }
     return Buffer.from(result + "e", "binary");
