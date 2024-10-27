@@ -29,8 +29,10 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
 
     // Parse Dictionary
     if (char === "d") {
-      const dict = new Map<string, any>();
+      const dict: Record<string, any> = {}; // Initialize an empty object for the dictionary
       index++; // Move past 'd'
+
+      // Parse key-value pairs until "e"
       while (bencodedValue[index] !== "e") {
         // Parse the key (must be a string in bencoding)
         const [key, newIndex] = parse(index);
@@ -40,10 +42,12 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
 
         // Parse the value associated with the key
         const [value, nextIndex] = parse(newIndex);
-        dict.set(key, value);
+        dict[key] = value; // Add key-value pair to the dictionary
+
         index = nextIndex; // Update index to continue parsing
       }
-      return [dict, index + 1]; // Move past 'e'
+
+      return [dict, index + 1]; // Move past 'e' and return the dictionary
     }
 
     // Parse Integer
