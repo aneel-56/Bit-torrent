@@ -93,7 +93,7 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
 function bencode(data: Record<string, any> | string | number): Buffer {
   if (typeof data === "object" && !Array.isArray(data)) {
     const deComp = zlib.inflateSync(data.pieces);
-    console.log(deComp)
+    console.log(Buffer.from(deComp))
     let result = "d";
     const keys = Object.keys(data).sort(); // Sort keys alphabetically as per bencoding rules
     console.log(keys);
