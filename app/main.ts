@@ -30,6 +30,21 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
       return [list, index + 1]; // Move past 'e'
     }
 
+    if (char === "d") {
+      const dict = new Map<string, any>();
+      index++;
+      while (bencodedValue[index] !== "e") {
+        const [key, newIndex] = parse(index);
+        if (typeof key !== "string") {
+          throw new Error("Dictionary keys must be strings in bencoding.");
+        }
+        const [value, nextIndex] = parse(newIndex);
+        dict.set(key, value);
+        index = nextIndex;
+      }
+      return [dict, index + 1];
+    }
+
     // Parse Integer
     if (char === "i") {
       const endIdx = bencodedValue.indexOf("e", index);
@@ -52,44 +67,9 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
 
     throw new Error("Unexpected character in bencoded value");
   }
-
-  function parseDict(index: number): [any, number] {
-    const char = bencodedValue[0];
-    index++;
-    if (char === "d") {
-      const dict = new Map<string, any>();
-      while (bencodedValue[index] !== "e") {
-        const [key, newIndex] = parseDict(index);
-        if (typeof key !== "string") {
-          throw new Error("Dictionary keys must be strings in bencoding.");
-        }
-        const [value, nextIndex] = parseDict(newIndex);
-        dict.set(key, value);
-        index = nextIndex;
-      }
-      return [dict, index + 1];
-    }
-    if (!isNaN(Number(char))) {
-      const colIndex = bencodedValue.indexOf(":", index);
-      if (colIndex === -1) throw new Error("Invalid bencoded String");
-      const strLen = parseInt(bencodedValue.substring(index, colIndex), 10);
-      const strVal = bencodedValue.substring(
-        colIndex + 1,
-        colIndex + 1 + strLen
-      );
-      return [strVal, colIndex + 1 + strLen];
-    }
-    if (char === "i") {
-      const endIdx = bencodedValue.indexOf("e", index);
-      const intVal = parseInt(bencodedValue.substring(index + 1, endIdx), 10);
-      return [intVal, endIdx + 1];
-    }
-    throw new Error("Invalid bencoded format");
-  }
-  const [result] = parseDict(0);
+  const [result] = parse(0);
   return result;
 }
-
 const args = process.argv;
 const bencodedValue = args[3];
 
