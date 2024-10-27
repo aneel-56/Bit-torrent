@@ -19,30 +19,30 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
     if (char === "l") {
       const list: any[] = [];
       index++; // Move past 'l'
-      // l5:helloi52ee
-      // Parse elements within list until "e"
       while (bencodedValue[index] !== "e") {
         const [value, newIndex] = parse(index);
         list.push(value);
         index = newIndex;
       }
-
       return [list, index + 1]; // Move past 'e'
     }
 
+    // Parse Dictionary
     if (char === "d") {
       const dict = new Map<string, any>();
-      index++;
+      index++; // Move past 'd'
       while (bencodedValue[index] !== "e") {
+        // Parse the key (must be a string in bencoding)
         const [key, newIndex] = parse(index);
         if (typeof key !== "string") {
           throw new Error("Dictionary keys must be strings in bencoding.");
         }
+        // Parse the value associated with the key
         const [value, nextIndex] = parse(newIndex);
         dict.set(key, value);
         index = nextIndex;
       }
-      return [dict, index + 1];
+      return [dict, index + 1]; // Move past 'e'
     }
 
     // Parse Integer
@@ -67,6 +67,7 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
 
     throw new Error("Unexpected character in bencoded value");
   }
+
   const [result] = parse(0);
   return result;
 }
