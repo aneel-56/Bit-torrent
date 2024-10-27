@@ -2,6 +2,7 @@
 // - decodeBencode("5:hello") -> "hello"
 // - decodeBencode("10:hello12345") -> "hello12345"
 const fs = require("fs");
+const crypto = require("crypto");
 
 interface TorrentInfo {
   announce: string;
@@ -89,6 +90,22 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
   return result;
 }
 
+function bencode(data: Record<string, any> | string | number): Buffer {
+  if (typeof data === "object" && !Array.isArray(data)) {
+    let result = "d";
+    for (let key of Object.keys(data).sort()) {
+      const value = data[key];
+      result += `${key.length}:${key}${bencode(value)}`;
+    }
+    return Buffer.from(result + "e");
+  } else if (typeof data === "string") {
+    return Buffer.from(`${data.length}:${data}`);
+  } else if (typeof data === "number") {
+    return Buffer.from(`i${data}e`);
+  }
+  throw new Error("Unsupported data type of bencoding");
+}
+
 const args = process.argv;
 const bencodedValue = args[3];
 
@@ -111,6 +128,9 @@ if (args[2] === "decode") {
     if (typeof announce === "string" && typeof length === "number") {
       console.log(`Tracker URL: ${announce}`);
       console.log(`Length: ${length}`);
+      const bencodedInfo = bencode(info);
+      const infoHash = crypto.createHash("sha1").update(bencodedInfo);
+      console.log(`Info Hash: ${infoHash}`);
     } else {
       console.error("Invalid torrent structure");
     }
