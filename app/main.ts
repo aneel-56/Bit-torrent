@@ -37,10 +37,11 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
         if (typeof key !== "string") {
           throw new Error("Dictionary keys must be strings in bencoding.");
         }
+
         // Parse the value associated with the key
         const [value, nextIndex] = parse(newIndex);
         dict.set(key, value);
-        index = nextIndex;
+        index = nextIndex; // Update index to continue parsing
       }
       return [dict, index + 1]; // Move past 'e'
     }
@@ -71,6 +72,7 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
   const [result] = parse(0);
   return result;
 }
+
 const args = process.argv;
 const bencodedValue = args[3];
 
