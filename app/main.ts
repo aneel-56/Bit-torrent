@@ -3,9 +3,17 @@
 // - decodeBencode("10:hello12345") -> "hello12345"
 const fs = require("fs");
 
-function decodeBencode(
-  bencodedValue: string
-): string | number | any[] | Buffer {
+interface TorrentInfo {
+  announce: string;
+  info: {
+    length: number;
+    name: string;
+    piece_length: number;
+    pieces: string;
+  };
+}
+
+function decodeBencode(bencodedValue: string): string | number | any[] {
   let endIndex = bencodedValue.indexOf("e");
   if (bencodedValue[0] === "i") {
     let startIndex = bencodedValue.indexOf("i");
@@ -93,7 +101,8 @@ if (args[2] === "decode") {
   }
 } else if (args[2] === "info") {
   const torrentFile = args[3];
-  const contents = fs.readFileSync(torrentFile);
+  const torrentData = fs.readFileSync(torrentFile);
+  const contents = decodeBencode(torrentData) as unknown as TorrentInfo;
   if (typeof contents === "object") {
     const announce = contents["announce"];
     const info = contents["info"];
