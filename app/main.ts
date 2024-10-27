@@ -1,6 +1,7 @@
 // Examples:
 // - decodeBencode("5:hello") -> "hello"
 // - decodeBencode("10:hello12345") -> "hello12345"
+const fs = require("fs");
 function decodeBencode(bencodedValue: string): string | number | any[] {
   let endIndex = bencodedValue.indexOf("e");
   if (bencodedValue[0] === "i") {
@@ -87,4 +88,8 @@ if (args[2] === "decode") {
   } catch (error: any) {
     console.error(error.message);
   }
+} else if (args[2] === "info") {
+  const torrentFile = args[3];
+  const contents = fs.readFileSync(torrentFile, "utf-8");
+  console.log(Buffer.from(contents));
 }
