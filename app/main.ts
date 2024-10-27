@@ -90,7 +90,7 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
   return result;
 }
 
-function bencode(data: Record<string, any> | string | number): Buffer {
+function bencode(data: Record<string, any> | string | number): Buffer | string {
   if (typeof data === "object" && !Array.isArray(data)) {
     let result = "d";
     for (let key of Object.keys(data).sort()) {
@@ -129,7 +129,10 @@ if (args[2] === "decode") {
       console.log(`Tracker URL: ${announce}`);
       console.log(`Length: ${length}`);
       const bencodedInfo = bencode(info);
-      const infoHash = crypto.createHash("sha1").update(bencodedInfo);
+      const infoHash = crypto
+        .createHash("sha1")
+        .update(bencodedInfo)
+        .digest("hex");
       console.log(`Info Hash: ${infoHash}`);
     } else {
       console.error("Invalid torrent structure");
