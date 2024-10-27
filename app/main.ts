@@ -92,11 +92,6 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
 
 function bencode(data: Record<string, any> | string | number): Buffer {
   if (typeof data === "object" && !Array.isArray(data)) {
-    const buf = Buffer.from(data.pieces, "binary");
-
-    const deComp = zlib.inflateSync(buf);
-    console.log(deComp);
-
     let result = "d";
     const keys = Object.keys(data).sort(); // Sort keys alphabetically as per bencoding rules
     console.log(keys);
@@ -138,6 +133,8 @@ if (args[2] === "decode") {
     const announce = contents["announce"];
     const info = contents["info"];
     const length = info?.["length"];
+    const pieceLength = info?.["piece_length"];
+    const pieces = info?.["pieces"];
 
     if (typeof announce === "string" && typeof length === "number") {
       console.log(`Tracker URL: ${announce}`);
@@ -148,6 +145,16 @@ if (args[2] === "decode") {
         .update(bencodedInfo)
         .digest("hex");
       console.log(`Info Hash: ${infoHash}`);
+      console.log(`Piece Length:  ${pieceLength} `);
+      if (Buffer.isBuffer(pieces)) {
+        console.log("Piece Hashes:");
+        for (let i = 0; i < pieces.length; i += 20) {
+          const pieceHash = pieces.slice(i, i + 20).toString("hex");
+          console.log(pieceHash);
+        }
+      } else {
+        console.error("Invalid format for pieces");
+      }
     } else {
       console.error("Invalid torrent structure");
     }
