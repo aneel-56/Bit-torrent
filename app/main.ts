@@ -106,9 +106,9 @@ function bencode(data: Record<string, any> | string | number): Buffer {
     }
     return Buffer.from(result + "e", "binary");
   } else if (typeof data === "string") {
-    return Buffer.from(`${data.length}:${data}`);
+    return Buffer.from(`${data.length}:${data}`, "binary");
   } else if (typeof data === "number") {
-    return Buffer.from(`i${data}e`);
+    return Buffer.from(`i${data}e`, "binary");
   }
   throw new Error("Unsupported data type of bencoding");
 }
