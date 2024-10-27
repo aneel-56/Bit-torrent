@@ -93,7 +93,7 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
 function bencode(data: Record<string, any> | string | number): Buffer {
   if (typeof data === "object" && !Array.isArray(data)) {
     let result = "d";
-    for (let key of Object.keys(data).sort()) {
+    for (let key of Object.keys(data)) {
       const value = data[key];
       result += `${key.length}:${key}${bencode(value)}`;
       console.log(result);
