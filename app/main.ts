@@ -16,7 +16,7 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
     const char = bencodedValue[index];
 
     // Parse List
-    if (char === "l" || char === "d") {
+    if (char === "l") {
       const list: any[] = [];
       index++; // Move past 'l'
       // l5:helloi52ee
@@ -53,66 +53,40 @@ function decodeBencode(bencodedValue: string): string | number | any[] {
     throw new Error("Unexpected character in bencoded value");
   }
 
-  function parse(index: number): [any, number] {
-    const char = bencodedValue[index];
-  
-    // Parse Dictionary
+  function parseDict(index: number): [any, number] {
+    const char = bencodedValue[0];
+    index++;
     if (char === "d") {
-      const dict: Record<string, any> = {};  // Initialize an empty object for the dictionary
-      index++; // Move past 'd'
-  
-      // Parse key-value pairs until "e"
+      const dict = new Map<string, any>();
       while (bencodedValue[index] !== "e") {
-        // Parse the key (must be a string in bencoding)
-        const [key, newIndex] = parse(index);
+        const [key, newIndex] = parseDict(index);
         if (typeof key !== "string") {
           throw new Error("Dictionary keys must be strings in bencoding.");
         }
-        
-        // Parse the value associated with the key
-        const [value, nextIndex] = parse(newIndex);
-        dict[key] = value; // Add key-value pair to the dictionary
-  
-        index = nextIndex; // Update index to continue parsing
+        const [value, nextIndex] = parseDict(newIndex);
+        dict.set(key, value);
+        index = nextIndex;
       }
-  
-      return [dict, index + 1]; // Move past 'e' and return the dictionary
+      return [dict, index + 1];
     }
-  
-    // Parse Integer
+    if (!isNaN(Number(char))) {
+      const colIndex = bencodedValue.indexOf(":", index);
+      if (colIndex === -1) throw new Error("Invalid bencoded String");
+      const strLen = parseInt(bencodedValue.substring(index, colIndex), 10);
+      const strVal = bencodedValue.substring(
+        colIndex + 1,
+        colIndex + 1 + strLen
+      );
+      return [strVal, colIndex + 1 + strLen];
+    }
     if (char === "i") {
       const endIdx = bencodedValue.indexOf("e", index);
       const intVal = parseInt(bencodedValue.substring(index + 1, endIdx), 10);
       return [intVal, endIdx + 1];
     }
-  
-    // Parse String
-    if (!isNaN(Number(char))) {
-      const colonIdx = bencodedValue.indexOf(":", index);
-      if (colonIdx === -1) throw new Error("Invalid bencoded string");
-      const strLen = parseInt(bencodedValue.substring(index, colonIdx), 10);
-      const strVal = bencodedValue.substring(colonIdx + 1, colonIdx + 1 + strLen);
-      return [strVal, colonIdx + 1 + strLen];
-    }
-  
-    // Parse List
-    if (char === "l") {
-      const list: any[] = [];
-      index++; // Move past 'l'
-  
-      // Parse elements within list until "e"
-      while (bencodedValue[index] !== "e") {
-        const [value, newIndex] = parse(index);
-        list.push(value);
-        index = newIndex;
-      }
-  
-      return [list, index + 1]; // Move past 'e'
-    }
-  
     throw new Error("Invalid bencoded format");
   }
-  const [result] = parse(0);
+  const [result] = parseDict(0);
   return result;
 }
 
