@@ -98,8 +98,9 @@ function bencode(data: Record<string, any> | string | number): Buffer {
     for (let key of keys) {
       if (key === "piece length") {
         const piece_len = data[key];
-        return piece_len
+        result += piece_len;
       }
+      console.log(result);
     }
     for (let key of keys) {
       const value = data[key];
