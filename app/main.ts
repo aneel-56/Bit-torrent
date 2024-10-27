@@ -129,10 +129,12 @@ if (args[2] === "decode") {
     if (typeof announce === "string" && typeof length === "number") {
       // console.log(`Tracker URL: ${announce}`);
       // console.log(`Length: ${length}`);
-      const bencodedInfo = bencode(info);
-      const infoHash = crypto.createHash("sha1").update(bencodedInfo);
-      console.log(infoHash);
-      console.log(`Info Hash: ${infoHash}`);
+      if (typeof info === "string") {
+        const bencodedInfo = bencode(info);
+        const infoHash = crypto.createHash("sha1").update(bencodedInfo);
+        console.log(infoHash);
+        console.log(`Info Hash: ${infoHash}`);
+      }
     } else {
       console.error("Invalid torrent structure");
     }
