@@ -99,6 +99,12 @@ function bencode(data: Record<string, any> | string | number): Buffer {
       console.log(result);
     }
     return Buffer.from(result + "e");
+  } else if (Array.isArray(data)) {
+    let result = "l";
+    for (let item of data) {
+      result += bencode(item).toString("binary");
+    }
+    return Buffer.from(result + "e", "binary");
   } else if (typeof data === "string") {
     return Buffer.from(`${data.length}:${data}`);
   } else if (typeof data === "number") {
