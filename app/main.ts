@@ -133,8 +133,8 @@ if (args[2] === "decode") {
     const length = info?.["length"];
 
     if (typeof announce === "string" && typeof length === "number") {
-      // console.log(`Tracker URL: ${announce}`);
-      // console.log(`Length: ${length}`);
+      console.log(`Tracker URL: ${announce}\n`);
+      console.log(`Length: ${length}\n`);
       const bencodedInfo = bencode(info);
       const infoHash = crypto
         .createHash("sha1")
