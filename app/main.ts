@@ -96,6 +96,7 @@ function bencode(data: Record<string, any> | string | number): Buffer {
     for (let key of Object.keys(data).sort()) {
       const value = data[key];
       result += `${key.length}:${key}${bencode(value)}`;
+      console.log(result);
     }
     return Buffer.from(result + "e");
   } else if (typeof data === "string") {
