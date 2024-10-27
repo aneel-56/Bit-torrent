@@ -101,10 +101,8 @@ if (args[2] === "decode") {
   }
 } else if (args[2] === "info") {
   const torrentFile = args[3];
-  const torrentData = fs.readFileSync(torrentFile);
-  const contents = decodeBencode(
-    torrentData.toString()
-  ) as unknown as TorrentInfo;
+  const torrentData = fs.readFileSync(torrentFile).toString("binary");
+  const contents = decodeBencode(torrentData) as unknown as TorrentInfo;
   if (typeof contents === "object") {
     const announce = contents["announce"];
     const info = contents["info"];
