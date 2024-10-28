@@ -136,13 +136,14 @@ if (args[2] === "decode") {
     const pieces = info?.["pieces"];
     // console.log(Buffer.from(pieces).toString("hex"));
     if (typeof announce === "string" && typeof length === "number") {
-      // console.log(`Tracker URL: ${announce}`);
-      // console.log(`Length: ${length}`);
+      console.log(`Tracker URL: ${announce}`);
+      console.log(`Length: ${length}`);
       const bencodedInfo = bencode(info);
       const infoHash = crypto
         .createHash("sha1")
         .update(bencodedInfo)
         .digest("hex");
+      console.log("Info Hash:", infoHash);
       const pieceBuff = Buffer.from(pieces);
       const pieceHashes = [];
 
@@ -156,6 +157,7 @@ if (args[2] === "decode") {
       }
 
       console.log("Piece Length:", pieceLength);
+      console.log("Piece Hashes");
       pieceHashes.forEach((hash) => console.log(`${hash}`));
     }
   } else {
