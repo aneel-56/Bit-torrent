@@ -145,8 +145,12 @@ if (args[2] === "decode") {
         .digest("hex");
       console.log("Info Hash:", infoHash);
       const pieceBuff = Buffer.from(pieces);
-      for (const pieceHash in pieceBuff) {
-        console.log(Buffer.from(pieceHash).toString("hex"));
+      const pieceBuffHash = crypto
+        .createHash("sha1")
+        .update(pieceBuff)
+        .digest("hex");
+      for (const pieceHash in pieceBuffHash) {
+        console.log(pieceHash);
       }
     }
   } else {
