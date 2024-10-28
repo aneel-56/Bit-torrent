@@ -145,10 +145,10 @@ if (args[2] === "decode") {
         .digest("hex");
       const pieceBuff = Buffer.from(pieces);
       const pieceHashes = [];
-
+      console.log("Piece Length:", pieceLength);
       if (pieceBuff && pieces.length % 20 === 0) {
         for (let i = 0; i < pieces.length; i += 20) {
-          const pieceHashBuff = pieceBuff.slice(i, i + 20);
+          const pieceHashBuff = pieceBuff.subarray(i, i + 20);
           const pieceHash = crypto
             .createHash("sha1")
             .update(pieceHashBuff)
