@@ -144,7 +144,8 @@ if (args[2] === "decode") {
         .digest("hex");
       // console.log("Info Hash:", infoHash);
       console.log("Piece Length:", pieceLength);
-      const piecesBuffer = Buffer.from(pieces);
+      const piecesBuffer = Buffer.from(pieces).toString("hex");
+
       console.log(piecesBuffer);
     }
   } else {
