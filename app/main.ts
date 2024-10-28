@@ -144,17 +144,22 @@ if (args[2] === "decode") {
         .update(bencodedInfo)
         .digest("hex");
       // console.log("Info Hash:", infoHash);
-      const hashArr = [];
+      const hashArr: string[] = [];
       console.log("Piece Length:", pieceLength);
+
+      // Assuming `pieces` is an array of Buffer or hex strings
       for (const hash of pieces) {
-        hashArr.push(hash);
+        hashArr.push(hash.toString()); // Convert each hash to a hex string if it's a Buffer
       }
-      console.log(
-        crypto
-          .createHash("sha1")
-          .update(Buffer.from(hashArr.join("")))
-          .digest("hex")
-      );
+
+      // Join the hashes together and create the SHA-1 hash
+      const combinedHash = hashArr.join("");
+      const sha1Hash = crypto
+        .createHash("sha1")
+        .update(Buffer.from(combinedHash, "hex"))
+        .digest("hex");
+
+      console.log("Piece Hashes:", sha1Hash);
     }
   } else {
     console.error("Failed to parse torrent data");
