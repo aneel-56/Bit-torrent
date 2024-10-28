@@ -144,11 +144,11 @@ if (args[2] === "decode") {
         .update(bencodedInfo)
         .digest("hex");
       console.log(`Info Hash: ${infoHash}`);
-      if (pieces && pieces.length % 20 === 0) {
-        console.log("Piece Hashes:");
+      const piece_Buff = Buffer.from(pieces).toString("hex");
+      if (piece_Buff && pieces.length % 20 === 0) {
         console.log("pieces_length", pieces.length);
         for (let i = 0; i < pieces.length; i += 20) {
-          const piece = pieces.substring(i, i + 20);
+          const piece = piece_Buff.substring(i, i + 20);
           console.log(piece);
           const pieceHash = Buffer.from(piece).toString("hex");
           console.log(pieceHash);
