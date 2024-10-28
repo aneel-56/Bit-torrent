@@ -144,15 +144,15 @@ if (args[2] === "decode") {
         .update(bencodedInfo)
         .digest("hex");
       console.log(`Info Hash: ${infoHash}`);
-      const piece_Buff = Buffer.from(pieces).toString("hex");
-      if (piece_Buff && pieces.length % 20 === 0) {
+      const pieceBuff = Buffer.from(pieces).toString("hex");
+      if (pieceBuff && pieces.length % 20 === 0) {
         console.log("pieces_length", pieces.length);
         for (let i = 0; i < pieces.length; i += 20) {
-          const piece = piece_Buff.substring(i, i + 20);
-          console.log(piece);
-          const pieceHash = Buffer.from(piece).toString("hex");
+          const pieceHashBuff = Buffer.from(pieceBuff.substring(i, i + 20));
+          const pieceHash = pieceHashBuff.toString("hex");
           console.log(pieceHash);
         }
+        console.log("Piece Length :", pieceLength);
       } else {
         console.error("Invalid format for pieces");
       }
