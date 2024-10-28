@@ -135,8 +135,8 @@ if (args[2] === "decode") {
     let pieces = info?.["pieces"];
     // console.log(Buffer.from(pieces).toString("hex"));
     if (typeof announce === "string" && typeof length === "number") {
-      // console.log(`Tracker URL: ${announce}`);
-      // console.log(`Length: ${length}`);
+      console.log(`Tracker URL: ${announce}`);
+      console.log(`Length: ${length}`);
       const bencodedInfo = bencode(info);
       const infoHash = crypto
         .createHash("sha1")
