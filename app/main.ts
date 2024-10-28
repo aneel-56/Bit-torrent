@@ -146,10 +146,11 @@ if (args[2] === "decode") {
         .digest("hex");
       console.log(`Info Hash: ${infoHash}`);
       console.log(`Piece Length:  ${pieceLength} `);
-      if (Buffer.isBuffer(pieces)) {
+      if (Buffer.isBuffer(pieces) && pieces.length % 20 === 0) {
         console.log("Piece Hashes:");
         for (let i = 0; i < pieces.length; i += 20) {
-          const pieceHash = pieces.slice(i, i + 20).toString();
+          const piece = pieces.substring(i, i + 20);
+          const pieceHash = Buffer.from(piece).toString("hex");
           console.log(pieceHash);
         }
       } else {
