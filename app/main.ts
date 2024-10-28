@@ -170,7 +170,8 @@ if (args[2] === "decode") {
         )}&port=${port}&uploaded=${uploaded}&downloaded=${downloaded}&left=${left}&compact=${compact}`
       )
       .then((response: { data: any }) => {
-        console.log(response.data);
+        const responseData: any = response.data;
+        console.log(decodeBencode(Buffer.from(responseData).toString("hex")));
       })
       .catch((error: { message: any }) => {
         console.error(error.message);
