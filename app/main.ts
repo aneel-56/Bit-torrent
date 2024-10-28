@@ -144,7 +144,8 @@ if (args[2] === "decode") {
         .update(bencodedInfo)
         .digest("hex");
       // console.log(`Info Hash: ${infoHash}`);
-      const pieceBuff = Buffer.from(pieces).toString("binary");
+      const pieceBuff = Buffer.from(pieces).toString("hex");
+      console.log(pieceBuff);
       // console.log("type of pieceLength : ", info.piece_length);
       console.log("Piece Length:", pieceLength);
       const pieceHashes = [];
