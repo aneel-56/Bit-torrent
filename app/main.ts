@@ -97,7 +97,7 @@ function bencode(data: Record<string, any> | string | number): Buffer {
     console.log(keys);
     for (let key of keys) {
       const value = data[key];
-      // console.log(`${value}\n`);
+      console.log(`Key:${key}\n`);
       result += `${key.length}:${key}${bencode(value).toString("binary")}`;
     }
     return Buffer.from(result + "e", "binary");
@@ -134,7 +134,7 @@ if (args[2] === "decode") {
     const info = contents["info"];
     console.log(info);
     const length = info?.["length"];
-    const pieceLength = info?.["piece_length"];
+    const pieceLength = info["piece_length"];
     const pieces = info?.["pieces"];
     if (typeof announce === "string" && typeof length === "number") {
       // console.log(`Tracker URL: ${announce}`);
