@@ -145,10 +145,24 @@ if (args[2] === "decode") {
       // console.log("Info Hash:", infoHash);
       console.log("Piece Length:", pieceLength);
       const piecesBuffer = Buffer.from(pieces).toString("hex");
-      for (const hash of piecesBuffer) {
-        console.log(hash);
+      const pieces2 = Buffer.from(piecesBuffer, "binary"); // Read as binary data
+
+      console.log(`Piece Length: ${piecesBuffer}`);
+
+      if (pieces.length % 20 === 0) {
+        const pieceHashes = [];
+        for (let i = 0; i < pieces2.length; i += 20) {
+          const pieceHash = pieces2.subarray(i, i + 20).toString("hex"); // Convert each 20-byte segment to hex
+          pieceHashes.push(pieceHash);
+        }
+        pieceHashes.forEach((hash) => console.log(hash)); // Print each hash in hexadecimal format
+      } else {
+        console.error("Invalid format for pieces");
       }
-      console.log(piecesBuffer);
+      // for (const hash of piecesBuffer) {
+      //   console.log(hash);
+      // }
+      // console.log(piecesBuffer);
     }
   } else {
     console.error("Failed to parse torrent data");
