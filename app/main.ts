@@ -132,7 +132,7 @@ if (args[2] === "decode") {
     const info = contents["info"];
     const length = info?.["length"];
     const pieceLength = info?.["piece length"];
-    const pieces = info?.["pieces"];
+    let pieces = info?.["pieces"];
     // console.log(Buffer.from(pieces).toString("hex"));
     if (typeof announce === "string" && typeof length === "number") {
       // console.log(`Tracker URL: ${announce}`);
@@ -148,18 +148,16 @@ if (args[2] === "decode") {
       console.log(pieces.toString("hex"));
 
       // Assuming `pieces` is an array of Buffer or hex strings
-      for (const hash of pieces) {
-        hashArr.push(hash.toString()); // Convert each hash to a hex string if it's a Buffer
+
+      // Split `pieces` Buffer into 20-byte chunks
+      pieces = Buffer.from(pieces);
+      for (let i = 0; i < pieces.length; i += 20) {
+        const pieceHash = pieces.subarray(i, i + 20);
+        hashArr.push(pieceHash.toString("hex"));
       }
 
-      // Join the hashes together and create the SHA-1 hash
-      const combinedHash = hashArr.join("");
-      const sha1Hash = crypto
-        .createHash("sha1")
-        .update(Buffer.from(combinedHash, "hex"))
-        .digest("hex");
-
-      console.log("Piece Hashes:", sha1Hash);
+      // Print each piece hash in hexadecimal format
+      console.log("Piece Hashes:", hashArr);
     }
   } else {
     console.error("Failed to parse torrent data");
