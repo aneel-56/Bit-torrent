@@ -142,7 +142,7 @@ if (args[2] === "decode") {
         .createHash("sha1")
         .update(bencodedInfo)
         .digest("hex");
-      // console.log("Info Hash:", infoHash);
+      console.log("Info Hash:", infoHash);
       console.log("Piece Length:", pieceLength);
       let result: string[] = [];
       for (let pos = 0; pos < pieces.length; pos += 20) {
