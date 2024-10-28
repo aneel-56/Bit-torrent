@@ -132,6 +132,7 @@ if (args[2] === "decode") {
   if (torrentData && typeof contents === "object") {
     const announce = contents["announce"];
     const info = contents["info"];
+    console.log(info);
     const length = info?.["length"];
     const pieceLength = info?.["piece_length"];
     const pieces = info?.["pieces"];
