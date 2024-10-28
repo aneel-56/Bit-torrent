@@ -9,7 +9,7 @@ interface TorrentInfo {
   info: {
     length: number;
     name: string;
-    piece_length: number;
+    "piece length": number;
     pieces: string;
   };
 }
@@ -94,9 +94,11 @@ function bencode(data: Record<string, any> | string | number): Buffer {
   if (typeof data === "object" && !Array.isArray(data)) {
     let result = "d";
     const keys = Object.keys(data).sort(); // Sort keys alphabetically as per bencoding rules
-    const pieceLenKey = Object.keys(data).find(key => key.includes("piece length"))
-    if(pieceLenKey){
-      console.log("vakk existss")
+    const pieceLenKey = Object.keys(data).find((key) =>
+      key.includes("piece length")
+    );
+    if (pieceLenKey) {
+      console.log("vakk existss");
     }
     console.log(keys);
     for (let key of keys) {
@@ -138,7 +140,7 @@ if (args[2] === "decode") {
     const info = contents["info"];
     console.log(info);
     const length = info?.["length"];
-    const pieceLength = info["piece_length"];
+    const pieceLength = info?.["piece length"];
     const pieces = info?.["pieces"];
     if (typeof announce === "string" && typeof length === "number") {
       // console.log(`Tracker URL: ${announce}`);
@@ -151,7 +153,7 @@ if (args[2] === "decode") {
       // console.log(`Info Hash: ${infoHash}`);
       const pieceBuff = Buffer.from(pieces).toString("hex");
       // console.log("type of pieceLength : ", info.piece_length);
-      console.log("Piece Length: ", info.piece_length);
+      console.log("Piece Length: ", pieceLength);
       if (pieceBuff && pieces.length % 20 === 0) {
         for (let i = 0; i < pieces.length; i += 20) {
           const pieceHashBuff = Buffer.from(pieceBuff.substring(i, i + 20));
