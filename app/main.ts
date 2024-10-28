@@ -143,30 +143,11 @@ if (args[2] === "decode") {
         .update(bencodedInfo)
         .digest("hex");
       // console.log("Info Hash:", infoHash);
+      const hexpieces = pieces.toString("hex");
+      console.log(hexpieces);
       console.log("Piece Length:", pieceLength);
-      const piecesBuffer = Buffer.from(pieces).toString("hex");
-      const pieces2 = Buffer.from(piecesBuffer, "binary"); // Read as binary data
-
-      console.log(`Piece Length: ${piecesBuffer}`);
-
-      if (pieces.length % 20 === 0) {
-        const pieceHashes = [];
-        for (let i = 0; i < pieces2.length; i += 20) {
-          const pieceHash = pieces2.subarray(i, i + 20).toString("hex"); // Convert each 20-byte segment to hex
-          pieceHashes.push(
-            crypto.createHash("sha1").update(pieceHash).digest("hex")
-          );
-        }
-        pieceHashes.forEach((hash) => console.log(hash)); // Print each hash in hexadecimal format
-      } else {
-        console.error("Invalid format for pieces");
-      }
-      // for (const hash of piecesBuffer) {
-      //   console.log(hash);
-      // }
-      // console.log(piecesBuffer);
+    } else {
+      console.error("Failed to parse torrent data");
     }
-  } else {
-    console.error("Failed to parse torrent data");
   }
 }
