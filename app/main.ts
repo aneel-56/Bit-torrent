@@ -3,7 +3,6 @@
 // - decodeBencode("10:hello12345") -> "hello12345"
 const fs = require("fs");
 const crypto = require("crypto");
-const zlib = require("zlib");
 interface TorrentInfo {
   announce: string;
   info: {
@@ -146,6 +145,7 @@ if (args[2] === "decode") {
       // console.log("Info Hash:", infoHash);
       const hashArr: string[] = [];
       console.log("Piece Length:", pieceLength);
+      console.log(pieces.toString("hex"));
 
       // Assuming `pieces` is an array of Buffer or hex strings
       for (const hash of pieces) {
