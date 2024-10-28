@@ -143,18 +143,8 @@ if (args[2] === "decode") {
         .update(bencodedInfo)
         .digest("hex");
       // console.log("Info Hash:", infoHash);
-      const hashArr: string[] = [];
       console.log("Piece Length:", pieceLength);
-      console.log(pieces.toString("hex"));
-      console.log(pieces.toString("binary"));
-      const piecesBuffer = Buffer.from(pieces).toString("hex");
-      const decodedpiecesBuffer = crypto
-        .createHash("sha1")
-        .update(piecesBuffer)
-        .toString("hex");
-
-      console.log("*****************");
-      console.log(decodedpiecesBuffer);
+      const piecesBuffer = Buffer.from(pieces);
       console.log(piecesBuffer);
     }
   } else {
