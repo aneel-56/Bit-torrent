@@ -144,7 +144,7 @@ if (args[2] === "decode") {
         .update(bencodedInfo)
         .digest("hex");
       console.log("Info Hash:", infoHash);
-      for (const hash of pieces) {
+      for (const hash of pieces.join("")) {
         console.log(hash.toString());
       }
     }
