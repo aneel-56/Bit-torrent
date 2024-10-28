@@ -144,9 +144,11 @@ if (args[2] === "decode") {
         .update(bencodedInfo)
         .digest("hex");
       console.log("Info Hash:", infoHash);
-      for (const hash of pieces.join("")) {
-        console.log(hash.toString());
+      const hashArr = [];
+      for (const hash of pieces) {
+        hashArr.push(hash);
       }
+      console.log(hashArr.join(""));
     }
   } else {
     console.error("Failed to parse torrent data");
