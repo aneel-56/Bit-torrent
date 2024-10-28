@@ -9,7 +9,7 @@ interface TorrentInfo {
     length: number;
     name: string;
     "piece length": number;
-    pieces: Buffer;
+    pieces: string;
   };
 }
 
@@ -143,9 +143,14 @@ if (args[2] === "decode") {
         .update(bencodedInfo)
         .digest("hex");
       // console.log("Info Hash:", infoHash);
-      const hexpieces = pieces.toString("hex");
-      console.log(hexpieces);
       console.log("Piece Length:", pieceLength);
+      let result: string[] = [];
+      for (let pos = 0; pos < pieces.length; pos += 20) {
+        result.push(
+          Buffer.from(pieces.substring(pos, pos + 20), "binary").toString("hex")
+        );
+      }
+      console.log(result);
     } else {
       console.error("Failed to parse torrent data");
     }
