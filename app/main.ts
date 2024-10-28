@@ -148,6 +148,13 @@ if (args[2] === "decode") {
       console.log(pieces.toString("hex"));
 
       const piecesBuffer = Buffer.from(pieces).toString("hex");
+      const decodedpiecesBuffer = crypto
+        .createHash("sha1")
+        .update(piecesBuffer)
+        .toString("hex");
+
+      console.log("*****************");
+      console.log(decodedpiecesBuffer);
       console.log(piecesBuffer);
     }
   } else {
