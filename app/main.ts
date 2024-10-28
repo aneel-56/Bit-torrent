@@ -139,7 +139,6 @@ if (args[2] === "decode") {
       console.log(`Tracker URL: ${announce}`);
       console.log(`Length: ${length}`);
       const bencodedInfo = bencode(info);
-      console.log(bencodedInfo);
       const infoHash = crypto
         .createHash("sha1")
         .update(bencodedInfo)
@@ -149,6 +148,7 @@ if (args[2] === "decode") {
         console.log("Piece Hashes:");
         for (let i = 0; i < pieces.length; i += 20) {
           const piece = pieces.substring(i, i + 20);
+          console.log(piece);
           const pieceHash = Buffer.from(piece).toString("hex");
           console.log(pieceHash);
         }
