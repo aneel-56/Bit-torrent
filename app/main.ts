@@ -150,7 +150,7 @@ if (args[2] === "decode") {
         for (let i = 0; i < pieces.length; i += 20) {
           const pieceHashBuff = Buffer.from(pieceBuff.substring(i, i + 20));
           const pieceHash = pieceHashBuff.toString("hex");
-          // console.log(pieceHash);
+          console.log(pieceHash);
         }
       } else {
         console.error("Invalid format for pieces");
