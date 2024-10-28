@@ -145,20 +145,9 @@ if (args[2] === "decode") {
         .digest("hex");
       console.log("Info Hash:", infoHash);
       const pieceBuff = Buffer.from(pieces);
-      const pieceHashes = [];
-
-      for (let i = 0; i < pieces.length; i += 20) {
-        const pieceHashBuff = Buffer.from(pieceBuff.subarray(i, i + 20));
-        const pieceHash = crypto
-          .createHash("sha1")
-          .update(pieceHashBuff)
-          .digest("hex");
-        pieceHashes.push(pieceHash);
+      for (const pieceHash in pieceBuff) {
+        console.log(Buffer.from(pieceHash).toString("hex"));
       }
-
-      console.log("Piece Length:", pieceLength);
-      console.log("Piece Hashes");
-      pieceHashes.forEach((hash) => console.log(`${hash}`));
     }
   } else {
     console.error("Failed to parse torrent data");
