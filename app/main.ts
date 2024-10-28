@@ -147,15 +147,17 @@ if (args[2] === "decode") {
       // console.log("type of pieceLength : ", info.piece_length);
       console.log("Piece Length:", pieceLength);
       console.log(Buffer.from(pieceBuff.substring(0, 20)).toString("hex"));
+      const pieceHashes = [];
       if (pieceBuff && pieces.length % 20 === 0) {
         for (let i = 0; i < pieces.length; i += 20) {
           const pieceHashBuff = Buffer.from(pieceBuff.substring(i, i + 20));
           const pieceHash = pieceHashBuff.toString("hex");
-          console.log(pieceHash);
+          pieceHashes.push(pieceHash);
         }
       } else {
         console.error("Invalid format for pieces");
       }
+      pieceHashes.forEach((hash) => console.log(hash));
     } else {
       console.error("Invalid torrent structure");
     }
