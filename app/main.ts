@@ -136,7 +136,7 @@ if (args[2] === "decode") {
     const pieceLength = info?.["piece_length"];
     const pieces = info?.["pieces"];
 
-    console.log("pieces: ", pieces);
+    console.log("pieces: ", info.pieces);
     console.log("piece_length", pieceLength);
     if (typeof announce === "string" && typeof length === "number") {
       console.log(`Tracker URL: ${announce}`);
