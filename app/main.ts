@@ -153,7 +153,9 @@ if (args[2] === "decode") {
         const pieceHashes = [];
         for (let i = 0; i < pieces2.length; i += 20) {
           const pieceHash = pieces2.subarray(i, i + 20).toString("hex"); // Convert each 20-byte segment to hex
-          pieceHashes.push(pieceHash);
+          pieceHashes.push(
+            crypto.createHash("sha1").update(pieceHash).digest("hex")
+          );
         }
         pieceHashes.forEach((hash) => console.log(hash)); // Print each hash in hexadecimal format
       } else {
