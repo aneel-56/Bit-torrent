@@ -146,6 +146,7 @@ if (args[2] === "decode") {
       const pieceBuff = Buffer.from(pieces).toString("hex");
       // console.log("type of pieceLength : ", info.piece_length);
       console.log("Piece Length:", pieceLength);
+      console.log(Buffer.from(pieceBuff.substring(0, 20)).toString("hex"));
       if (pieceBuff && pieces.length % 20 === 0) {
         for (let i = 0; i < pieces.length; i += 20) {
           const pieceHashBuff = Buffer.from(pieceBuff.substring(i, i + 20));
