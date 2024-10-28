@@ -144,7 +144,7 @@ if (args[2] === "decode") {
         .update(bencodedInfo)
         .digest("hex");
       console.log("Info Hash:", infoHash);
-      const pieceBuff = Buffer.from(pieces).toString("hex");
+      const pieceBuff = Buffer.from(pieces[0]).toString("hex");
       const pieceBuffHash = crypto
         .createHash("sha1")
         .update(pieceBuff)
