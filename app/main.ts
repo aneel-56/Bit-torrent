@@ -150,7 +150,10 @@ if (args[2] === "decode") {
       if (pieceBuff && pieces.length % 20 === 0) {
         for (let i = 0; i < pieces.length; i += 40) {
           const pieceHashBuff = Buffer.from(pieceBuff.substring(i, i + 40));
-          const pieceHash = pieceHashBuff.toString("hex");
+          const pieceHash = crypto
+            .createHash("sha1")
+            .update(pieceHashBuff)
+            .digest("hex");
           pieceHashes.push(pieceHash);
         }
       } else {
