@@ -146,11 +146,11 @@ if (args[2] === "decode") {
       if (piecesBuffer && pieces.length % 20 === 0) {
         console.log("Piece Length:", pieces.length);
         let pieceHashes = [];
-        for (let i = 0; i < pieces.length; i += 20) {
-          const piece = pieces.slice(i, i + 20);
+        for (let i = 0; i < piecesBuffer.length; i += 20) {
+          const piece = piecesBuffer.slice(i, i + 20);
 
-          if (Buffer.isBuffer(piece) && piece.length === 20) {
-            const pieceHash = piece.toString("hex");
+          if (Buffer.isBuffer(piece) && piecesBuffer.length === 20) {
+            const pieceHash = piecesBuffer.toString("hex");
             pieceHashes.push(pieceHash);
           } else {
             console.error("Invalid piece length or type:", piece);
