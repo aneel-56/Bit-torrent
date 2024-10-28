@@ -142,19 +142,24 @@ if (args[2] === "decode") {
         .createHash("sha1")
         .update(bencodedInfo)
         .digest("hex");
+      // console.log(`Info Hash: ${infoHash}`);
+      const pieceBuff = Buffer.from(pieces).toString("hex");
+      // console.log("type of pieceLength : ", info.piece_length);
       console.log("Piece Length:", pieceLength);
-
-      const pieceBuff = Buffer.from(pieces).toString("hex"); // Convert pieces from hex string to Buffer
-
-      if (pieceBuff.length % 20 === 0) {
-        console.log("Piece Hashes:");
-        for (let i = 0; i < pieceBuff.length; i += 20) {
-          const pieceHash = pieceBuff.slice(i, i + 20);
-          console.log(pieceHash);
+      const pieceHashes = [];
+      if (pieceBuff && pieces.length % 20 === 0) {
+        for (let i = 0; i < pieces.length; i += 20) {
+          const pieceHashBuff = Buffer.from(pieceBuff.substring(i, i + 20));
+          const pieceHash = crypto
+            .createHash("sha1")
+            .update(pieceHashBuff)
+            .digest("hex");
+          pieceHashes.push(pieceHash);
         }
       } else {
         console.error("Invalid format for pieces");
       }
+      console.log(pieceHashes);
     } else {
       console.error("Invalid torrent structure");
     }
