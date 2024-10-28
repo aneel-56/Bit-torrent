@@ -144,12 +144,12 @@ if (args[2] === "decode") {
         .digest("hex");
       console.log("Piece Length:", pieceLength);
 
-      const pieceBuff = Buffer.from(pieces, "hex"); // Convert pieces from hex string to Buffer
+      const pieceBuff = Buffer.from(pieces).toString("hex"); // Convert pieces from hex string to Buffer
 
       if (pieceBuff.length % 20 === 0) {
         console.log("Piece Hashes:");
         for (let i = 0; i < pieceBuff.length; i += 20) {
-          const pieceHash = pieceBuff.subarray(i, i + 20).toString("hex");
+          const pieceHash = pieceBuff.slice(i, i + 20);
           console.log(pieceHash);
         }
       } else {
