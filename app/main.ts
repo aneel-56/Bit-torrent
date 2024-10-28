@@ -97,7 +97,7 @@ function bencode(data: Record<string, any> | string | number): Buffer {
     console.log(keys);
     for (let key of keys) {
       const value = data[key];
-      console.log(`Key:${key}\n`);
+      console.log((`Key:${key}\n`).toString());
       result += `${key.length}:${key}${bencode(value).toString("binary")}`;
     }
     return Buffer.from(result + "e", "binary");
