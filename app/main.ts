@@ -156,7 +156,6 @@ if (args[2] === "decode") {
       }
 
       console.log("Piece Length:", pieceLength);
-      console.log("Piece Hashes:");
       pieceHashes.forEach((hash) => console.log(`${hash}`));
     }
   } else {
