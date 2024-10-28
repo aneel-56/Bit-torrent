@@ -134,6 +134,7 @@ if (args[2] === "decode") {
     const length = info?.["length"];
     const pieceLength = info?.["piece length"];
     const pieces = info?.["pieces"];
+    console.log(pieces.toString());
     if (typeof announce === "string" && typeof length === "number") {
       // console.log(`Tracker URL: ${announce}`);
       // console.log(`Length: ${length}`);
