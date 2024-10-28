@@ -3,6 +3,7 @@
 // - decodeBencode("10:hello12345") -> "hello12345"
 const fs = require("fs");
 const crypto = require("crypto");
+const axios = require("axios");
 interface TorrentInfo {
   announce: string;
   info: {
@@ -138,7 +139,7 @@ if (args[2] === "decode") {
       console.log(`Tracker URL: ${announce}`);
       console.log(`Length: ${length}`);
       const bencodedInfo = bencode(info);
-      const infoHash = crypto
+      var infoHash = crypto
         .createHash("sha1")
         .update(bencodedInfo)
         .digest("hex");
@@ -154,5 +155,25 @@ if (args[2] === "decode") {
     } else {
       console.error("Failed to parse torrent data");
     }
+    const reqUrl = announce;
+    const peer_id = crypto.randomBytes(20);
+    const port = 6881;
+    const uploaded = 0;
+    const left = pieceLength;
+    const compact = 1;
+    const downloaded = 0;
+
+    axios
+      .get(
+        `${announce}?info_hash=${infoHash}&peer_id=${peer_id.toString(
+          "hex"
+        )}&port=${port}&uploaded=${uploaded}&downloaded=${downloaded}&left=${left}&compact=${compact}`
+      )
+      .then((response: { data: any }) => {
+        console.log(response.data);
+      })
+      .catch((error: { message: any }) => {
+        console.error(error.message);
+      });
   }
 }
