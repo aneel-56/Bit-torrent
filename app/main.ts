@@ -142,7 +142,8 @@ if (args[2] === "decode") {
         .createHash("sha1")
         .update(bencodedInfo)
         .digest("hex");
-      if (Buffer.isBuffer(pieces) && pieces.length % 20 === 0) {
+      const piecesBuffer = Buffer.from(pieces);
+      if (piecesBuffer && pieces.length % 20 === 0) {
         console.log("Piece Length:", pieces.length);
         let pieceHashes = [];
         for (let i = 0; i < pieces.length; i += 20) {
