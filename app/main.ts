@@ -145,10 +145,16 @@ if (args[2] === "decode") {
         .digest("hex");
       console.log("Info Hash:", infoHash);
       const hashArr = [];
+      console.log("Pieces Length:", pieceLength);
       for (const hash of pieces) {
         hashArr.push(hash);
       }
-      console.log(Buffer.from(hashArr.join("")).toString("hex"));
+      console.log(
+        crypto
+          .createHash("sha1")
+          .update(Buffer.from(hashArr.join("")))
+          .digest("hex")
+      );
     }
   } else {
     console.error("Failed to parse torrent data");
