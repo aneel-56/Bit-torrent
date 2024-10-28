@@ -154,7 +154,7 @@ if (args[2] === "decode") {
             .createHash("sha1")
             .update(pieceHashBuff)
             .digest("hex");
-          pieceHashes.push(pieceHash);
+          pieceHashes.push(pieceHash.toString("hex"));
         }
       } else {
         console.error("Invalid format for pieces");
