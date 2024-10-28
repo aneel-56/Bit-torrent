@@ -146,7 +146,7 @@ if (args[2] === "decode") {
       const hashArr: string[] = [];
       console.log("Piece Length:", pieceLength);
       console.log(pieces.toString("hex"));
-      console.log(pieces);
+      console.log(pieces.toString("binary"));
       const piecesBuffer = Buffer.from(pieces).toString("hex");
       const decodedpiecesBuffer = crypto
         .createHash("sha1")
