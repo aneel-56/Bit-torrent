@@ -136,6 +136,8 @@ if (args[2] === "decode") {
     const pieceLength = info?.["piece_length"];
     const pieces = info?.["pieces"];
 
+    console.log("pieces: ", pieces);
+    console.log("piece_length", pieceLength);
     if (typeof announce === "string" && typeof length === "number") {
       console.log(`Tracker URL: ${announce}`);
       console.log(`Length: ${length}`);
@@ -146,8 +148,6 @@ if (args[2] === "decode") {
         .digest("hex");
       console.log(`Info Hash: ${infoHash}`);
       console.log(`Piece Length:  ${pieceLength} `);
-      console.log("pieces: ", pieces);
-      console.log("piece_length", pieceLength);
       if (Buffer.isBuffer(pieces) && pieces.length % 20 === 0) {
         console.log("Piece Hashes:");
         for (let i = 0; i < pieces.length; i += 20) {
