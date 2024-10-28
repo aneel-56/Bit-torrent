@@ -94,13 +94,6 @@ function bencode(data: Record<string, any> | string | number): Buffer {
   if (typeof data === "object" && !Array.isArray(data)) {
     let result = "d";
     const keys = Object.keys(data).sort(); // Sort keys alphabetically as per bencoding rules
-    const pieceLenKey = Object.keys(data).find((key) =>
-      key.includes("piece length")
-    );
-    if (pieceLenKey) {
-      console.log("vakk existss");
-    }
-    console.log(keys);
     for (let key of keys) {
       const value = data[key];
       // console.log((`Key:${key}\n`).toString());
@@ -138,7 +131,6 @@ if (args[2] === "decode") {
   if (torrentData && typeof contents === "object") {
     const announce = contents["announce"];
     const info = contents["info"];
-    console.log(info);
     const length = info?.["length"];
     const pieceLength = info?.["piece length"];
     const pieces = info?.["pieces"];
@@ -158,7 +150,7 @@ if (args[2] === "decode") {
         for (let i = 0; i < pieces.length; i += 20) {
           const pieceHashBuff = Buffer.from(pieceBuff.substring(i, i + 20));
           const pieceHash = pieceHashBuff.toString("hex");
-          console.log(pieceHash);
+          // console.log(pieceHash);
         }
       } else {
         console.error("Invalid format for pieces");
