@@ -148,7 +148,7 @@ if (args[2] === "decode") {
       for (const hash of pieces) {
         hashArr.push(hash);
       }
-      console.log(hashArr.join(""));
+      console.log(Buffer.from(hashArr.join("")).toString("hex"));
     }
   } else {
     console.error("Failed to parse torrent data");
