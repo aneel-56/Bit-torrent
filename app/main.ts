@@ -148,7 +148,7 @@ if (args[2] === "decode") {
       const pieceHashes = [];
       if (pieceBuff && pieceBuff.length % 20 === 0) {
         for (let i = 0; i < pieceBuff.length; i += 20) {
-          const pieceHash = pieceBuff.slice(i, i + 20).toString("hex");
+          const pieceHash = pieceBuff.subarray(i, i + 20).toString("hex");
           pieceHashes.push(pieceHash);
         }
       } else {
