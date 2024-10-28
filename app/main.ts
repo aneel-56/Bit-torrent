@@ -147,14 +147,14 @@ if (args[2] === "decode") {
       // console.log("type of pieceLength : ", info.piece_length);
       console.log("Piece Length:", pieceLength);
       const pieceHashes = [];
-      if (pieceBuff && pieces.length % 40 === 0) {
-        for (let i = 0; i < pieces.length; i += 40) {
-          const pieceHashBuff = Buffer.from(pieceBuff.substring(i, i + 40));
+      if (pieceBuff && pieces.length % 20 === 0) {
+        for (let i = 0; i < pieces.length; i += 20) {
+          const pieceHashBuff = Buffer.from(pieceBuff.substring(i, i + 20));
           const pieceHash = crypto
             .createHash("sha1")
             .update(pieceHashBuff)
             .digest("hex");
-          pieceHashes.push(pieceHash.toString());
+          pieceHashes.push(pieceHash);
         }
       } else {
         console.error("Invalid format for pieces");
