@@ -142,7 +142,7 @@ if (args[2] === "decode") {
         .createHash("sha1")
         .update(bencodedInfo)
         .digest("hex");
-      const pieceBuff = Buffer.from(pieces); // Ensure pieces are in buffer format
+      const pieceBuff = Buffer.from(pieces, "hex"); // Ensure pieces are in buffer format
       console.log("Piece Length:", pieceLength);
 
       const pieceHashes = [];
