@@ -150,11 +150,7 @@ if (args[2] === "decode") {
       if (pieceBuff && pieces.length % 20 === 0) {
         for (let i = 0; i < pieces.length; i += 20) {
           const pieceHashBuff = Buffer.from(pieceBuff.substring(i, i + 20));
-          const pieceHash = crypto
-            .createHash("sha1")
-            .update(pieceHashBuff)
-            .digest("hex");
-          pieceHashes.push(pieceHash);
+          pieceHashes.push(pieceHashBuff);
         }
       } else {
         console.error("Invalid format for pieces");
