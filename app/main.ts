@@ -155,7 +155,11 @@ if (args[2] === "decode") {
         const pieceHash = pieces.subarray(i, i + 20);
         hashArr.push(pieceHash.toString("hex"));
       }
-
+      const hashpieceArr = crypto
+        .createHash("sha1")
+        .update(hashArr)
+        .digest("hex");
+      console.log(hashpieceArr);
       // Print each piece hash in hexadecimal format
       console.log("Piece Hashes:", hashArr);
     }
