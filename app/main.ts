@@ -145,20 +145,18 @@ if (args[2] === "decode") {
         .digest("hex");
       const pieceBuff = Buffer.from(pieces);
       const pieceHashes = [];
-      console.log("Piece Length:", pieceLength);
-      if (pieceBuff && pieces.length % 20 === 0) {
-        for (let i = 0; i < pieces.length; i += 20) {
-          const pieceHashBuff = pieceBuff.subarray(i, i + 20);
-          const pieceHash = crypto
-            .createHash("sha1")
-            .update(pieceHashBuff)
-            .digest("hex");
-          pieceHashes.push(pieceHash);
-        }
-      } else {
-        console.error("Invalid format for pieces");
+
+      for (let i = 0; i < pieces.length; i += 20) {
+        const pieceHashBuff = Buffer.from(pieceBuff.subarray(i, i + 20));
+        const pieceHash = crypto
+          .createHash("sha1")
+          .update(pieceHashBuff)
+          .digest("hex");
+        pieceHashes.push(pieceHash);
       }
 
+      console.log("Piece Length:", pieceLength);
+      console.log("Piece Hashes:");
       pieceHashes.forEach((hash) => console.log(`${hash}`));
     }
   } else {
