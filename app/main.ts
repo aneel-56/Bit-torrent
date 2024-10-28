@@ -134,7 +134,7 @@ if (args[2] === "decode") {
     const length = info?.["length"];
     const pieceLength = info?.["piece length"];
     const pieces = info?.["pieces"];
-    console.log(Buffer.from(pieces).toString("hex"));
+    // console.log(Buffer.from(pieces).toString("hex"));
     if (typeof announce === "string" && typeof length === "number") {
       // console.log(`Tracker URL: ${announce}`);
       // console.log(`Length: ${length}`);
