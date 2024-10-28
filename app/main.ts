@@ -145,7 +145,7 @@ if (args[2] === "decode") {
         .digest("hex");
       console.log("Info Hash:", infoHash);
       const hashArr = [];
-      console.log("Pieces Length:", pieceLength);
+      console.log("Piece Length:", pieceLength);
       for (const hash of pieces) {
         hashArr.push(hash);
       }
