@@ -145,6 +145,7 @@ if (args[2] === "decode") {
         .digest("hex");
       console.log(`Info Hash: ${infoHash}`);
       const pieceBuff = Buffer.from(pieces).toString("hex");
+      console.log("Piece Length: ", pieceLength);
       if (pieceBuff && pieces.length % 20 === 0) {
         console.log("pieces_length", pieces.length);
         for (let i = 0; i < pieces.length; i += 20) {
@@ -152,7 +153,6 @@ if (args[2] === "decode") {
           const pieceHash = pieceHashBuff.toString("hex");
           console.log(pieceHash);
         }
-        console.log("Piece Length :", pieceLength);
       } else {
         console.error("Invalid format for pieces");
       }
