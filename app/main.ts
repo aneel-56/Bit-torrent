@@ -10,7 +10,7 @@ interface TorrentInfo {
     length: number;
     name: string;
     "piece length": number;
-    pieces: string;
+    pieces: Buffer;
   };
 }
 
@@ -144,13 +144,8 @@ if (args[2] === "decode") {
         .update(bencodedInfo)
         .digest("hex");
       console.log("Info Hash:", infoHash);
-      const pieceBuff = Buffer.from(pieces[0]).toString("hex");
-      const pieceBuffHash = crypto
-        .createHash("sha1")
-        .update(pieceBuff)
-        .digest("hex");
-      for (const pieceHash in pieceBuffHash) {
-        console.log(pieceHash);
+      for (const hash of pieces) {
+        console.log(hash.toString());
       }
     }
   } else {
