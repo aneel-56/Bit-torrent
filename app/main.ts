@@ -159,7 +159,7 @@ if (args[2] === "decode") {
       } else {
         console.error("Invalid format for pieces");
       }
-      console.log(pieceHashes);
+      pieceHashes.forEach((hash) => console.log(`${hash}\n`));
     } else {
       console.error("Invalid torrent structure");
     }
