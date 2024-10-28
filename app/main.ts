@@ -94,10 +94,14 @@ function bencode(data: Record<string, any> | string | number): Buffer {
   if (typeof data === "object" && !Array.isArray(data)) {
     let result = "d";
     const keys = Object.keys(data).sort(); // Sort keys alphabetically as per bencoding rules
+    const pieceLenKey = Object.keys(data).find(key => key.includes("piece length"))
+    if(pieceLenKey){
+      console.log("vakk existss")
+    }
     console.log(keys);
     for (let key of keys) {
       const value = data[key];
-      console.log((`Key:${key}\n`).toString());
+      // console.log((`Key:${key}\n`).toString());
       result += `${key.length}:${key}${bencode(value).toString("binary")}`;
     }
     return Buffer.from(result + "e", "binary");
