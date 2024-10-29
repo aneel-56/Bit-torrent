@@ -177,14 +177,13 @@ if (args[2] === "decode") {
         const decodedResponse = decodeBencode(
           response.data.toString("binary")
         ) as unknown as TrackerResponse;
-        const peers: any = Buffer.from(decodedResponse.peers).toString(
-          "binary"
-        );
+        const peers: any = Buffer.from(decodedResponse.peers);
         // console.log("Peers:", peers);
         const peerList: string[] = [];
         for (let i = 0; i < peers.length; i += 6) {
           const ip = Array.from(peers.slice(i, i + 4)).join(".");
-          const port = (peers[i + 4] << 8) + peers[i + 5];
+          const ports = peers.readUInt16BE(i + 4);
+          // const port = (peers[i + 4] << 8) + peers[i + 5];
           peerList.push(`${ip}:${port}`);
         }
         // console.log("Peers: ");
