@@ -179,7 +179,7 @@ axios
 
   // Check if peers are returned in the expected format
   if (Buffer.isBuffer(decodedResponse.peers)) {
-    const peers: Buffer = decodedResponse.peers;  // This is assumed to be a Buffer
+    const peers = Buffer.from((decodedResponse.peers));  // This is assumed to be a Buffer
     const peerList: string[] = [];
 
     // Extract IP and port from the compact format
