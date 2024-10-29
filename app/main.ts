@@ -164,12 +164,13 @@ if (args[2] === "decode") {
     const left = pieceLength;
     const compact = 1;
     const downloaded = 0;
+    console.log("TrackerUrl:", trackerUrl);
 
     const requestUrl = `${trackerUrl}?info_hash=${decodeBencode(
       infoHash
     )}&peer_id=${peerId}&port=${port}&uploaded=${uploaded}&downloaded=${downloaded}&left=${left}&compact=${compact}`;
     axios
-      .get(requestUrl)
+      .get(requestUrl, { responseType: "arraybuffer" })
       .then((response: { data: any }) => {
         const responseData: any = response.data;
         console.log(decodeBencode(Buffer.from(responseData).toString("hex")));
