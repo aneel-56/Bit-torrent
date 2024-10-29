@@ -14,6 +14,10 @@ interface TorrentInfo {
     pieces: string;
   };
 }
+interface TrackerResponse {
+  interval?: number;
+  peers: string | Buffer;
+}
 
 function decodeBencode(bencodedValue: string): string | number | any[] {
   let endIndex = bencodedValue.indexOf("e");
@@ -160,6 +164,7 @@ if (args[2] === "decode") {
     const peerId = encodeURIComponent(
       crypto.randomBytes(20).toString("binary")
     );
+    const encodeInfoHash = encodeURIComponent(infoHash.toString("binary"));
     const port = 6881;
     const uploaded = 0;
     const left = pieceLength;
@@ -167,14 +172,24 @@ if (args[2] === "decode") {
     const downloaded = 0;
     console.log("TrackerUrl:", trackerUrl);
 
-    const requestUrl = `${trackerUrl}?info_hash=${decodeBencode(
-      infoHash
-    )}&peer_id=${peerId}&port=${port}&uploaded=${uploaded}&downloaded=${downloaded}&left=${left}&compact=${compact}`;
+    const requestUrl = `${trackerUrl}?info_hash=${encodeInfoHash}&peer_id=${peerId}&port=${port}&uploaded=${uploaded}&downloaded=${downloaded}&left=${left}&compact=${compact}`;
     axios
       .get(requestUrl, { responseType: "arraybuffer" })
       .then((response: { data: any }) => {
-        const responseData: any = response.data;
-        console.log(bencode2.decode(responseData));
+        const decodedResponse = decodeBencode(
+          response.data.toString("binary")
+        ) as unknown as TrackerResponse;
+        const peers = Buffer.from(decodedResponse["peers"]);
+        const peerList: string[] = [];
+        for (let i = 0; i < peers.length; i += 6) {
+          const ip = `${peers[i]}.${peers[i + 1]}.${peers[i + 2]}.${
+            peers[i + 3]
+          }`;
+          const port = (peers[i + 4] << 8) + peers[i + 5];
+          peerList.push(`${ip}.${port}`);
+        }
+        console.log("Peers: ");
+        console.log(peerList.join("\n"));
       })
       .catch((error: { message: any }) => {
         console.error(error.message);
