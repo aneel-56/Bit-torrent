@@ -184,7 +184,8 @@ if (args[2] === "decode") {
           const ip = `${peers[i]}.${peers[i + 1]}.${peers[i + 2]}.${
             peers[i + 3]
           }`;
-          const port = (peers[i + 4] << 8) + peers[i + 5];
+          const port = peers.readUInt16BE(i + 4);
+          // (peers[i + 4] << 8) + peers[i + 5];
           peerList.push(`${ip}:${port}`);
         }
         // console.log("Peers: ");
