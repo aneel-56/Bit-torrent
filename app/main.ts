@@ -180,7 +180,7 @@ if (args[2] === "decode") {
         const peers: any = Buffer.from(decodedResponse.peers);
         // console.log("Peers:", peers);
         const peerList: string[] = [];
-        for (let i = 0; i < peers.length; i++) {
+        for (let i = 0; i < peers.length-6; i++) {
           const ipOffset = i * 6;
           const ip = [
             peers.readUInt8(ipOffset),
