@@ -15,7 +15,7 @@ interface TorrentInfo {
 }
 interface TrackerResponse {
   interval?: number;
-  peers: string | Buffer;
+  peers: string | Buffer | any[];
 }
 
 function decodeBencode(bencodedValue: string): string | number | any[] {
@@ -177,15 +177,14 @@ if (args[2] === "decode") {
         const decodedResponse = decodeBencode(
           response.data.toString("binary")
         ) as unknown as TrackerResponse;
-        const peers = Buffer.from(decodedResponse.peers).toString("binary");
+        const peers: any = Buffer.from(decodedResponse.peers).toString(
+          "binary"
+        );
         // console.log("Peers:", peers);
         const peerList: string[] = [];
         for (let i = 0; i < peers.length; i += 6) {
-          const ip = `${peers[i]}.${peers[i + 1]}.${peers[i + 2]}.${
-            peers[i + 3]
-          }`;
-          const port = peers[i + 5];
-          console.log(port);
+          const ip = Array.from(peers.slice(i, i + 4)).join(".");
+          const port = peers.readUInt16BE(i + 4);
           peerList.push(`${ip}:${port}`);
         }
         // console.log("Peers: ");
