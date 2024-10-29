@@ -187,7 +187,7 @@ if (args[2] === "decode") {
           peerList.push(`${ip}.${port}`);
         }
         console.log("Peers: ");
-        console.log(peerList.join("\n"));
+        peerList.forEach((x) => console.log(x));
       })
       .catch((error: { message: any }) => {
         console.error(error.message);
