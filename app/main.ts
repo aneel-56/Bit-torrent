@@ -169,7 +169,6 @@ if (args[2] === "decode") {
     const left = pieceLength;
     const compact = 1;
     const downloaded = 0;
-    console.log("TrackerUrl:", trackerUrl);
 
     const requestUrl = `${trackerUrl}?info_hash=${encodeInfoHash}&peer_id=${peerId}&port=${port}&uploaded=${uploaded}&downloaded=${downloaded}&left=${left}&compact=${compact}`;
     axios
