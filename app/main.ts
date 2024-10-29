@@ -169,7 +169,7 @@ if (args[2] === "info" || args[2] === "peers") {
     const peerId = "AaBbCcDdEeFfGgHhIiJj";
     const port = 6881;
     const uploaded = 0;
-    const left = contents["info"].pieces;
+    const left = contents["info"]["piece length"];
     const compact = 1;
     const downloaded = 0;
     const urlEncodedInfoHash = infoHash
