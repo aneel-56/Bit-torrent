@@ -167,9 +167,7 @@ if (args[2] === "decode") {
     const compact = 1;
     const downloaded = 0;
     const infoHashBuffer = Buffer.from(infoHash, "hex"); // Convert hex to Buffer
-    const urlEncodedInfoHash = encodeURIComponent(
-      infoHashBuffer.toString("binary").slice(0, 20)
-    ); // Encode the buffer as binary
+    const urlEncodedInfoHash = infoHashBuffer.toString("binary").slice(0, 20); // Encode the buffer as binary
 
     const requestUrl = `${trackerUrl}?info_hash=${urlEncodedInfoHash}&peer_id=${peerId}&port=${port}&uploaded=${uploaded}&downloaded=${downloaded}&left=${left}&compact=${compact}`;
     axios
