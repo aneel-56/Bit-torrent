@@ -183,7 +183,7 @@ if (args[2] === "decode") {
         const peerList: string[] = [];
         const peerSize = 6;
         const peerCount = Math.floor(peers.length / peerSize);
-        for (let i = 1; i < peerCount; i += 6) {
+        for (let i = 0; i < peerCount; i += 6) {
           const ipOffset = i * peerSize;
           if (ipOffset + 6 <= peers.length) {
             const ip = [
