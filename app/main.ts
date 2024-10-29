@@ -208,8 +208,6 @@ if (args[2] === "peers") {
 }
 
 if (args[2] === "handshake") {
-  const data = fs.readFileSync(args[3]);
-  const dataBuffer = Buffer.from(data).toString("binary");
-  const handshakeData = decodeBencode(dataBuffer);
-  console.log(bencode(handshakeData));
+  const data = bencode(fs.readFileSync(args[3]));
+  const dataBen = console.log(data);
 }
