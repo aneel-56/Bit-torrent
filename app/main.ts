@@ -4,7 +4,6 @@
 const fs = require("fs");
 const crypto = require("crypto");
 const axios = require("axios");
-const bencode2 = require("bencode");
 interface TorrentInfo {
   announce: string;
   info: {
