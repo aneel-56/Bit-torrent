@@ -186,7 +186,7 @@ if (args[2] === "decode") {
           const port = (peers[i + 4] << 8) + peers[i + 5];
           peerList.push(`${ip}:${port}`);
         }
-        console.log("Peers: ");
+        // console.log("Peers: ");
         peerList.forEach((x) => console.log(x));
       })
       .catch((error: { message: any }) => {
