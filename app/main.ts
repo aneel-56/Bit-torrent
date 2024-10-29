@@ -156,7 +156,7 @@ if (args[2] === "info" || args[2] === "peers") {
           Buffer.from(pieces.substring(pos, pos + 20), "binary").toString("hex")
         );
       }
-      // console.log(result);
+      console.log(result);
     } else {
       console.error("Failed to parse torrent data");
     }
