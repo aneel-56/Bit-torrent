@@ -209,5 +209,5 @@ if (args[2] === "peers") {
 
 if (args[2] === "handshake") {
   const data = bencode(fs.readFileSync(args[3]));
-  const dataBen = console.log(data);
+  console.log(data);
 }
