@@ -128,15 +128,16 @@ if (args[2] === "decode") {
   } catch (error: any) {
     console.error(error.message);
   }
-} else if (args[2] === "info" || args[2] === "peers") {
+} 
+else if (args[2] === "info" ) {
   const torrentFile = args[3];
   const torrentData = fs.readFileSync(torrentFile).toString("binary");
   const contents = decodeBencode(torrentData) as unknown as TorrentInfo;
   if (torrentData && typeof contents === "object") {
-    const announce = contents["announce"];
-    const info = contents["info"];
-    const length = info?.["length"];
-    const pieceLength = info?.["piece length"];
+    var announce = contents["announce"];
+    var info = contents["info"];
+    var length = info?.["length"];
+    var pieceLength = info?.["piece length"];
     let pieces = info?.["pieces"];
     // console.log(Buffer.from(pieces).toString("hex"));
     if (typeof announce === "string" && typeof length === "number") {
@@ -159,6 +160,18 @@ if (args[2] === "decode") {
     } else {
       console.error("Failed to parse torrent data");
     }
+  }
+}
+  else if(args[2] === "peers"){
+    const torrentFile = args[3];
+  const torrentData = fs.readFileSync(torrentFile).toString("binary");
+  const contents = decodeBencode(torrentData) as unknown as TorrentInfo;
+  if (torrentData && typeof contents === "object") {
+    var announce = contents["announce"];
+    var info = contents["info"];
+    var length = info?.["length"];
+    var pieceLength = info?.["piece length"];
+    let pieces = info?.["pieces"];
     const trackerUrl = announce;
     const peerId = "AaBbCcDdEeFfGgHhIiJj";
     const port = 6881;
@@ -199,4 +212,4 @@ if (args[2] === "decode") {
         console.error(error.message);
       });
   }
-}
+  }
