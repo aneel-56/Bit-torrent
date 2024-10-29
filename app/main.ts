@@ -129,7 +129,7 @@ if (args[2] === "decode") {
     console.error(error.message);
   }
 }
-if (args[2] === "info" || args[2] === "peers") {
+if (args[2] === "info") {
   const torrentFile = args[3];
   const torrentData = fs.readFileSync(torrentFile).toString("binary");
   const contents = decodeBencode(torrentData) as unknown as TorrentInfo;
@@ -161,6 +161,7 @@ if (args[2] === "info" || args[2] === "peers") {
       console.error("Failed to parse torrent data");
     }
   }
+}
   if (args[2] === "peers") {
     const torrentFile = args[3];
     const torrentData = fs.readFileSync(torrentFile).toString("binary");
@@ -205,4 +206,9 @@ if (args[2] === "info" || args[2] === "peers") {
         console.error(error.message);
       });
   }
+
+if (args[2] === "handshake") {
+  const data = fs.readFileSync(args[3]);
+  console.log(Buffer.from(data))
+
 }
