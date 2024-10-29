@@ -165,7 +165,7 @@ if (args[2] === "decode") {
 
     axios
       .get(
-        `${announce}?info_hash=${infoHash}&peer_id=${peer_id.toString(
+        `${reqUrl}?info_hash=${infoHash}&peer_id=${peer_id.toString(
           "hex"
         )}&port=${port}&uploaded=${uploaded}&downloaded=${downloaded}&left=${left}&compact=${compact}`
       )
