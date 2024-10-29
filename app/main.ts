@@ -211,5 +211,5 @@ if (args[2] === "handshake") {
   const data = fs.readFileSync(args[3]);
   const dataBuffer = Buffer.from(data).toString("binary");
   const handshakeData = decodeBencode(dataBuffer);
-  console.log(handshakeData)
+  console.log(bencode(handshakeData));
 }
