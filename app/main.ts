@@ -175,7 +175,7 @@ if (args[2] === "decode") {
       .get(requestUrl, { responseType: "arraybuffer" })
       .then((response: { data: any }) => {
         const decodedResponse = decodeBencode(
-          response.data.toString("hex")
+          response.data.toString("binary")
         ) as unknown as TrackerResponse;
         const peers: any = Buffer.from(decodedResponse.peers);
         // console.log("Peers:", peers);
