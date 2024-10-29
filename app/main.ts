@@ -160,7 +160,9 @@ if (args[2] === "decode") {
       console.error("Failed to parse torrent data");
     }
     const trackerUrl = announce;
-    const peerId = encodeURIComponent(crypto.randomBytes(20).toString());
+    const peerId = encodeURIComponent(
+      crypto.randomBytes(20).toString("binary")
+    );
     console.log("peerId", peerId);
     const encodeInfoHash = encodeURIComponent(infoHash);
     const port = 6881;
