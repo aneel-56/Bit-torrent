@@ -178,8 +178,8 @@ if (args[2] === "decode") {
           response.data.toString("binary")
         ) as unknown as TrackerResponse;
         console.log(decodedResponse);
-        const peers: any = decodedResponse.peers;
-        // console.log("Peers:", peers);
+        const peers: any = Buffer.from(decodedResponse.peers);
+        console.log("Peers:", peers);
         const peerList: string[] = [];
         for (let i = 0; i < peers.length; i += 6) {}
         // console.log("Peers: ");
