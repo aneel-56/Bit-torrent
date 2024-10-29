@@ -155,20 +155,19 @@ if (args[2] === "decode") {
     } else {
       console.error("Failed to parse torrent data");
     }
-    const reqUrl = announce;
-    const peer_id = crypto.randomBytes(20);
+    const trackerUrl = announce;
+    const peerId = crypto.randomBytes(20);
     const port = 6881;
     const uploaded = 0;
     const left = pieceLength;
     const compact = 1;
     const downloaded = 0;
 
+    const requestUrl = `${trackerUrl}?info_hash=${decodeBencode(
+      infoHash
+    )}&peer_id=${peerId}&port=${port}&uploaded=${uploaded}&downloaded=${downloaded}&left=${left}&compact=${compact}`;
     axios
-      .get(
-        `${reqUrl}?info_hash=${infoHash}&peer_id=${peer_id.toString(
-          "hex"
-        )}&port=${port}&uploaded=${uploaded}&downloaded=${downloaded}&left=${left}&compact=${compact}`
-      )
+      .get(requestUrl)
       .then((response: { data: any }) => {
         const responseData: any = response.data;
         console.log(decodeBencode(Buffer.from(responseData).toString("hex")));
