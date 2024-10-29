@@ -171,28 +171,32 @@ if (args[2] === "decode") {
       .map((byte: any) => `%${byte}`)
       .join("");
     const requestUrl = `${trackerUrl}?info_hash=${urlEncodedInfoHash}&peer_id=${peerId}&port=${port}&uploaded=${uploaded}&downloaded=${downloaded}&left=${left}&compact=${compact}`;
-    axios
-      .get(requestUrl, { responseType: "arraybuffer" })
-      .then((response: { data: any }) => {
-        const decodedResponse = decodeBencode(
-          response.data.toString("binary")
-        ) as unknown as TrackerResponse;
-        // console.log(decodedResponse);
-        const peers: any = Buffer.from(decodedResponse.peers);
-        // console.log("Peers:", peers);
-        const peerList: string[] = [];
-        for (let i = 0; i < peers.length - 6; i += 6) {
-          const ip = `${peers[i]}.${peers[i + 1]}.${peers[i + 2]}.${
-            peers[i + 3]
-          }`;
-          const port = (peers[i + 4] << 8) + peers[i + 5];
-          peerList.push(`${ip}:${port}`);
-        }
-        // console.log("Peers: ");
-        peerList.forEach((x) => console.log(x));
-      })
-      .catch((error: { message: any }) => {
-        console.error(error.message);
-      });
+    
+axios
+.get(requestUrl, { responseType: "arraybuffer" })
+.then((response: { data: any }) => {
+  const decodedResponse = decodeBencode(response.data.toString("binary")) as unknown as TrackerResponse;
+
+  // Check if peers are returned in the expected format
+  if (Buffer.isBuffer(decodedResponse.peers)) {
+    const peers: Buffer = decodedResponse.peers;  // This is assumed to be a Buffer
+    const peerList: string[] = [];
+
+    // Extract IP and port from the compact format
+    for (let i = 0; i < peers.length; i += 6) {
+      const ip = `${peers[i]}.${peers[i + 1]}.${peers[i + 2]}.${peers[i + 3]}`;
+      const port = (peers[i + 4] << 8) + peers[i + 5];  // Correct port calculation
+      peerList.push(`${ip}:${port}`);
+    }
+
+    // Output the list of peers
+    peerList.forEach((peer) => console.log(peer));
+  } else {
+    console.error("Peers format is not a Buffer. Received:", decodedResponse.peers);
+  }
+})
+.catch((error: { message: any }) => {
+  console.error("Error fetching peers:", error.message);
+});
   }
 }
