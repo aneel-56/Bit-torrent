@@ -183,8 +183,10 @@ if (args[2] === "decode") {
         const peerList: string[] = [];
         const peerSize = 6;
         const peerCount = Math.floor(peers.length / peerSize);
-        for (let i = 0; i < peers.length; i += 6) {
-          const ip = `${peers[i]}.${peers[i + 1]}.${peers[i + 2]}.${peers[i + 3]}`;
+        for (let i = 0; i < peers.length - 6; i += 6) {
+          const ip = `${peers[i]}.${peers[i + 1]}.${peers[i + 2]}.${
+            peers[i + 3]
+          }`;
           const port = (peers[i + 4] << 8) + peers[i + 5];
           peerList.push(`${ip}:${port}`);
         }
