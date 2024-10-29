@@ -174,12 +174,11 @@ if (args[2] === "decode") {
     axios
       .get(requestUrl, { responseType: "arraybuffer" })
       .then((response: { data: any }) => {
-        const decodedResponse = decodeBencode(
-          response.data.toString("binary")
-        ) as unknown as TrackerResponse;
-        // console.log(decodedResponse);
-        const peers: any = Buffer.from(decodedResponse.peers);
-        // console.log("Peers:", peers);
+        const responseData = response.data.toString("binary");
+        const decodedResponse: any = decodeBencode(responseData) as unknown as {
+          peers: string;
+        };
+        const peers = decodedResponse.peers;
         const peerList: string[] = [];
         const peerCount = peers.length / 6; // Each peer is 6 bytes
 
