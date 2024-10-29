@@ -162,53 +162,54 @@ if (args[2] === "info") {
     }
   }
 }
-  if (args[2] === "peers") {
-    const torrentFile = args[3];
-    const torrentData = fs.readFileSync(torrentFile).toString("binary");
-    const contents = decodeBencode(torrentData) as unknown as TorrentInfo;
-    const trackerUrl = contents["announce"];
-    const peerId = "AaBbCcDdEeFfGgHhIiJj";
-    const port = 6881;
-    const uploaded = 0;
-    const left = contents["info"]["piece length"];
-    const compact = 1;
-    const downloaded = 0;
-    const urlEncodedInfoHash = infoHash
-      .match(/.{1,2}/g)
-      .map((byte: any) => `%${byte}`)
-      .join("");
-    const requestUrl = `${trackerUrl}?info_hash=${urlEncodedInfoHash}&peer_id=${peerId}&port=${port}&uploaded=${uploaded}&downloaded=${downloaded}&left=${left}&compact=${compact}`;
-    axios
-      .get(requestUrl, { responseType: "arraybuffer" })
-      .then((response: { data: any }) => {
-        const responseData = response.data.toString("binary");
-        const decodedResponse: any = decodeBencode(responseData) as unknown as {
-          peers: string;
-        };
-        const peers = decodedResponse.peers;
-        const peerList: string[] = [];
-        const peerCount = peers.length / 6; // Each peer is 6 bytes
+if (args[2] === "peers") {
+  const torrentFile = args[3];
+  const torrentData = fs.readFileSync(torrentFile).toString("binary");
+  const contents = decodeBencode(torrentData) as unknown as TorrentInfo;
+  const trackerUrl = contents["announce"];
+  const peerId = "AaBbCcDdEeFfGgHhIiJj";
+  const port = 6881;
+  const uploaded = 0;
+  const left = contents["info"]["piece length"];
+  const compact = 1;
+  const downloaded = 0;
+  const urlEncodedInfoHash = infoHash
+    .match(/.{1,2}/g)
+    .map((byte: any) => `%${byte}`)
+    .join("");
+  const requestUrl = `${trackerUrl}?info_hash=${urlEncodedInfoHash}&peer_id=${peerId}&port=${port}&uploaded=${uploaded}&downloaded=${downloaded}&left=${left}&compact=${compact}`;
+  axios
+    .get(requestUrl, { responseType: "arraybuffer" })
+    .then((response: { data: any }) => {
+      const responseData = response.data.toString("binary");
+      const decodedResponse: any = decodeBencode(responseData) as unknown as {
+        peers: string;
+      };
+      const peers = decodedResponse.peers;
+      const peerList: string[] = [];
+      const peerCount = peers.length / 6; // Each peer is 6 bytes
 
-        for (let i = 0; i < peerCount; i++) {
-          const offset = i * 6;
-          const ip = `${peers.charCodeAt(offset)}.${peers.charCodeAt(
-            offset + 1
-          )}.${peers.charCodeAt(offset + 2)}.${peers.charCodeAt(offset + 3)}`;
-          const port =
-            (peers.charCodeAt(offset + 4) << 8) | peers.charCodeAt(offset + 5); // Combine the two bytes for the port
-          peerList.push(`${ip}:${port}`);
-        }
+      for (let i = 0; i < peerCount; i++) {
+        const offset = i * 6;
+        const ip = `${peers.charCodeAt(offset)}.${peers.charCodeAt(
+          offset + 1
+        )}.${peers.charCodeAt(offset + 2)}.${peers.charCodeAt(offset + 3)}`;
+        const port =
+          (peers.charCodeAt(offset + 4) << 8) | peers.charCodeAt(offset + 5); // Combine the two bytes for the port
+        peerList.push(`${ip}:${port}`);
+      }
 
-        // console.log("Peers: ");
-        peerList.forEach((x) => console.log(x));
-      })
-      .catch((error: { message: any }) => {
-        console.error(error.message);
-      });
-  }
+      // console.log("Peers: ");
+      peerList.forEach((x) => console.log(x));
+    })
+    .catch((error: { message: any }) => {
+      console.error(error.message);
+    });
+}
 
 if (args[2] === "handshake") {
   const data = fs.readFileSync(args[3]);
-  console.log(Buffer.from(data))
-
+  const dataBuffer = Buffer.from(data).toString("binary");
+  const handshakeData = decodeBencode(dataBuffer);
+  console.log(handshakeData)
 }
