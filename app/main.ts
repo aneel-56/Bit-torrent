@@ -168,7 +168,7 @@ if (args[2] === "decode") {
     const downloaded = 0;
     const infoHashBuffer = Buffer.from(infoHash, "hex"); // Convert hex to Buffer
     const urlEncodedInfoHash = encodeURIComponent(
-      infoHashBuffer.toString("binary")
+      infoHashBuffer.toString("binary").slice(0, 20)
     ); // Encode the buffer as binary
 
     const requestUrl = `${trackerUrl}?info_hash=${urlEncodedInfoHash}&peer_id=${peerId}&port=${port}&uploaded=${uploaded}&downloaded=${downloaded}&left=${left}&compact=${compact}`;
