@@ -185,10 +185,11 @@ if (args[2] === "decode") {
 
         for (let i = 0; i < peerCount; i++) {
           const offset = i * 6;
-          const ip = `${peers[offset]}.${peers[offset + 1]}.${
-            peers[offset + 2]
-          }.${peers[offset + 3]}`;
-          const port = (peers[offset + 4] << 8) | peers[offset + 5]; // Combine the two bytes for the port
+          const ip = `${peers.charCodeAt(offset)}.${peers.charCodeAt(
+            offset + 1
+          )}.${peers.charCodeAt(offset + 2)}.${peers.charCodeAt(offset + 3)}`;
+          const port =
+            (peers.charCodeAt(offset + 4) << 8) | peers.charCodeAt(offset + 5); // Combine the two bytes for the port
           peerList.push(`${ip}:${port}`);
         }
 
