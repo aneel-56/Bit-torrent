@@ -183,7 +183,7 @@ if (args[2] === "decode") {
         const peerList: string[] = [];
         const peerSize = 6;
         const peerCount = Math.floor(peers.length / peerSize);
-        for (let i = 0; i < peerCount; i += 6) {
+        for (let i = 1; i < peerCount; i += 6) {
           const ipOffset = i * peerSize;
           if (ipOffset + 6 <= peers.length) {
             const ip = [
@@ -192,7 +192,7 @@ if (args[2] === "decode") {
               peers.readUInt8(ipOffset + 2), // Third byte of IP
               peers.readUInt8(ipOffset + 3), // Fourth byte of IP
             ].join(".");
-            console.log("ip : ", ip);
+
             const port = peers.readUInt16BE(ipOffset + 4);
             peerList.push(`${ip}:${port}`);
           }
