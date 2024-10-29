@@ -161,6 +161,7 @@ if (args[2] === "decode") {
     }
     const trackerUrl = announce;
     const peerId = encodeURIComponent(crypto.randomBytes(20).toString());
+    console.log("peerId", peerId);
     const encodeInfoHash = encodeURIComponent(infoHash);
     const port = 6881;
     const uploaded = 0;
