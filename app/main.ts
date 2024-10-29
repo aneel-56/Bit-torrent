@@ -192,7 +192,7 @@ if (args[2] === "decode") {
               peers.readUInt8(ipOffset + 2), // Third byte of IP
               peers.readUInt8(ipOffset + 3), // Fourth byte of IP
             ].join(".");
-
+            console.log("ip : ", ip);
             const port = peers.readUInt16BE(ipOffset + 4);
             peerList.push(`${ip}:${port}`);
           }
