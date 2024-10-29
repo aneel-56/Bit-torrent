@@ -4,6 +4,7 @@
 const fs = require("fs");
 const crypto = require("crypto");
 const axios = require("axios");
+const bencode2 = require("bencode");
 interface TorrentInfo {
   announce: string;
   info: {
@@ -173,7 +174,7 @@ if (args[2] === "decode") {
       .get(requestUrl, { responseType: "arraybuffer" })
       .then((response: { data: any }) => {
         const responseData: any = response.data;
-        console.log(decodeBencode(Buffer.from(responseData).toString("hex")));
+        console.log(bencode2.decode(responseData));
       })
       .catch((error: { message: any }) => {
         console.error(error.message);
