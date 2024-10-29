@@ -128,16 +128,16 @@ if (args[2] === "decode") {
   } catch (error: any) {
     console.error(error.message);
   }
-} 
-else if (args[2] === "info" ) {
+}
+if (args[2] === "info" || args[2] === "peers") {
   const torrentFile = args[3];
   const torrentData = fs.readFileSync(torrentFile).toString("binary");
   const contents = decodeBencode(torrentData) as unknown as TorrentInfo;
   if (torrentData && typeof contents === "object") {
-    var announce = contents["announce"];
-    var info = contents["info"];
-    var length = info?.["length"];
-    var pieceLength = info?.["piece length"];
+    const announce = contents["announce"];
+    const info = contents["info"];
+    const length = info?.["length"];
+    const pieceLength = info?.["piece length"];
     let pieces = info?.["pieces"];
     // console.log(Buffer.from(pieces).toString("hex"));
     if (typeof announce === "string" && typeof length === "number") {
@@ -161,22 +161,15 @@ else if (args[2] === "info" ) {
       console.error("Failed to parse torrent data");
     }
   }
-}
-  else if(args[2] === "peers"){
+  if (args[2] === "peers") {
     const torrentFile = args[3];
-  const torrentData = fs.readFileSync(torrentFile).toString("binary");
-  const contents = decodeBencode(torrentData) as unknown as TorrentInfo;
-  if (torrentData && typeof contents === "object") {
-    var announce = contents["announce"];
-    var info = contents["info"];
-    var length = info?.["length"];
-    var pieceLength = info?.["piece length"];
-    let pieces = info?.["pieces"];
-    const trackerUrl = announce;
+    const torrentData = fs.readFileSync(torrentFile).toString("binary");
+    const contents = decodeBencode(torrentData) as unknown as TorrentInfo;
+    const trackerUrl = contents["announce"];
     const peerId = "AaBbCcDdEeFfGgHhIiJj";
     const port = 6881;
     const uploaded = 0;
-    const left = pieceLength;
+    const left = contents["info"].pieces;
     const compact = 1;
     const downloaded = 0;
     const urlEncodedInfoHash = infoHash
@@ -212,4 +205,4 @@ else if (args[2] === "info" ) {
         console.error(error.message);
       });
   }
-  }
+}
