@@ -176,7 +176,7 @@ if (args[2] === "decode") {
         const decodedResponse = decodeBencode(
           response.data.toString("binary")
         ) as unknown as TrackerResponse;
-        const peers = Buffer.from(decodedResponse["peers"]);
+        const peers = Buffer.from(decodedResponse.peers);
         const peerList: string[] = [];
         for (let i = 0; i < peers.length; i += 6) {
           const ip = `${peers[i]}.${peers[i + 1]}.${peers[i + 2]}.${
