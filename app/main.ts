@@ -128,7 +128,7 @@ if (args[2] === "decode") {
   } catch (error: any) {
     console.error(error.message);
   }
-} else if (args[2] === "info") {
+} else if (args[2] === "info" || args[2] === "peers") {
   const torrentFile = args[3];
   const torrentData = fs.readFileSync(torrentFile).toString("binary");
   const contents = decodeBencode(torrentData) as unknown as TorrentInfo;
@@ -160,10 +160,8 @@ if (args[2] === "decode") {
       console.error("Failed to parse torrent data");
     }
     const trackerUrl = announce;
-    const peerId = encodeURIComponent(
-      crypto.randomBytes(20).toString("binary")
-    );
-    const encodeInfoHash = encodeURIComponent(infoHash.toString("binary"));
+    const peerId = encodeURIComponent(crypto.randomBytes(20));
+    const encodeInfoHash = encodeURIComponent(infoHash);
     const port = 6881;
     const uploaded = 0;
     const left = pieceLength;
