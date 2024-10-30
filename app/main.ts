@@ -4,6 +4,7 @@
 const fs = require("fs");
 const crypto = require("crypto");
 const axios = require("axios");
+const net = require("net");
 interface TorrentInfo {
   announce: string;
   info: {
@@ -208,6 +209,8 @@ if (args[2] === "peers") {
 }
 
 if (args[2] === "handshake") {
-  const data = bencode(fs.readFileSync(args[3]));
-  console.log(data);
+  const data = fs.readFileSync(args[3]).toString("binary");
+  const handbenData = decodeBencode(data);
+  const hashAndPort = args[4].split(":");
+  const connection = net.createConnection();
 }
